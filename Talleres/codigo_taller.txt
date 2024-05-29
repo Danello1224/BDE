@@ -1,0 +1,119 @@
+/*
+Nombre: Saldivar Beltran Daniela
+Asignatura: IBDE
+Semestre: 2024-2
+Grupo:02
+Titulo: Servicio automotriz
+Descripcion: Talleres y mecanicos
+Version:1.0
+*/
+---------------------
+/*Crear una Base de datos*/
+CREATE DATABASE dsb
+WITH
+OWNER=postgres
+ENCODING= 'UTF8'
+TABLESPACE=pg_default
+CONNECTION LIMIT=-1;
+---------------------
+
+CREATE TABLE public.cliente
+(
+    "id_cliente" "char" NOT NULL,
+    nombre_cte character varying (20) NOT NULL,
+    ap_pat_cte character varying (20) NOT NULL,
+    ap_mat_cte character varying (20),
+    correo_cte character varying (50) NOT NULL,
+    telefono_cte "char" NOT NULL,
+    estado_cte character varying (30) NOT NULL,
+    municipio_cte character varying (40) NOT NULL,
+    colonia_cte character varying (60) NOT NULL,
+    calle_cte character varying (60) NOT NULL,
+    cod_postal_cte "char" NOT NULL,
+    mascota_cte character varying (20) NOT NULL,
+    bebida character varying (20) NOT NULL,
+    PRIMARY KEY ("id_cliente")
+);
+
+CREATE TABLE public.cargo_empleado
+(
+    "Id_cargo" "char" NOT NULL,
+    nombre_cargo character varying(50) NOT NULL,
+    PRIMARY KEY ("Id_cargo")
+);
+
+CREATE TABLE public.taller
+(
+	"Id_Taller" "char" NOT NULL,
+	estado  character varying(20) NOT NULL,
+	municipio character varying(20) NOT NULL,
+	colonia character varying(60) NOT NULL,
+	calle character varying(60) NOT NULL,
+	cod_postal "char"NOT NULL,
+	telefono "char" NOT NULL,
+	color_fachada character varying (20) NOT NULL,
+	PRIMARY KEY ("Id_Taller")
+);
+
+CREATE TABLE public.empleado
+(
+	"Id_Empleado" "char" NOT NULL,
+	nombre_emp  character varying(20) NOT NULL,
+	ap_pat_emp character varying(20) NOT NULL,
+	ap_mat_emp character varying(20),
+	correo_emp character varying(50) NOT NULL,
+	telefono_emp "char" NOT NULL,
+	mascotas_emp character varying (20) NOT NULL,
+	anio_nacimiento "char" NOT NULL,
+	alimento character varying (30),
+	PRIMARY KEY ("Id_Empleado")
+);
+
+ALTER TABLE IF EXISTS public.empleado
+    ADD CONSTRAINT fk_id_cargo FOREIGN KEY ("Id_Empleado")
+    REFERENCES public.cargo_empleado ("Id_cargo") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+ALTER TABLE IF EXISTS public.empleado
+    ADD CONSTRAINT fk_id_taller FOREIGN KEY ("Id_Empleado")
+    REFERENCES public.taller ("Id_Taller") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+CREATE TABLE public.coche
+(
+    "Id_coche" "char" NOT NULL,
+    matricula "char" NOT NULL,
+    marca character varying(20) NOT NULL,
+    color character varying (20) NOT NULL,
+    transmision character varying (20) NOT NULL,
+    marca_neumaticos character varying (30) NOT NULL,
+    PRIMARY KEY ("Id_coche"),
+    CONSTRAINT "fk_Id_Cliente" FOREIGN KEY ("Id_coche")
+        REFERENCES public.cliente ("Id_Cliente") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+CREATE TABLE public.reparacion
+(
+	"Id_reparacion" "char" NOT NULL, 
+	 PRIMARY KEY ("Id_reparacion")
+);
+
+ALTER TABLE IF EXISTS public.reparacion
+    ADD CONSTRAINT "fk_Id_coche" FOREIGN KEY ("Id_reparacion")
+    REFERENCES public.coche ("Id_coche") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+ALTER TABLE IF EXISTS public.reparacion
+    ADD CONSTRAINT "fk_Id_empleado" FOREIGN KEY ("Id_reparacion")
+    REFERENCES public.empleado ("Id_Empleado") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
