@@ -136,7 +136,7 @@
             <dia:string>#Id_Cargo#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#CHAR(4)#</dia:string>
+            <dia:string>#CHAR(5)#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>##</dia:string>
@@ -246,7 +246,7 @@
             <dia:string>#Id_Empleado#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#CHAR(4)#</dia:string>
+            <dia:string>#CHAR(5)#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>##</dia:string>
@@ -596,7 +596,7 @@
             <dia:string>#Colonia#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#VARCHAR(60)#</dia:string>
+            <dia:string>#VARCHAR#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>##</dia:string>
@@ -616,7 +616,7 @@
             <dia:string>#Calle#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#VARCHAR(60)#</dia:string>
+            <dia:string>#VARCHAR#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>##</dia:string>
@@ -1266,7 +1266,7 @@
             <dia:string>#Colonia_Cte#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#VARCHAR(60)#</dia:string>
+            <dia:string>#VARCHAR#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>##</dia:string>
@@ -1286,7 +1286,7 @@
             <dia:string>#Calle_Cte#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#VARCHAR(60)#</dia:string>
+            <dia:string>#VARCHAR#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>##</dia:string>

@@ -2,6 +2,7 @@
 from faker import Faker
 from faker.providers import BaseProvider
 import random
+import string
 import os
 #------------------------------------------------------------------------------
 # Clase para datos
@@ -136,11 +137,14 @@ def genera_correo(nombre, apellido):
 fake = Faker('es_MX')
 fake.add_provider(MexicoProvider)
 
-num_clients = 5
+num_clients = 5170
+num_empleados = 11
+num_carros = 15 
 
 unique_phone_numbers = set()
 unique_emails = set()
 unique_id_cliente=set()
+unique_id_cargo_empleado=set()
 
 ##RUTA 1 Cliente
 ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\Clientes.txt"
@@ -149,7 +153,7 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
 #Cliente 
 with open(ruta_completa, 'w', encoding='utf-8') as file:
-    file.write('INSERT INTO cliente ("Id_Cliente", nombre_cte, ap_pat_cte, ap_mat_cte, correo_cte, "telefono_cte", estado_cte, municipio_cte, colonia_cte, calle_cte, "cod_postal_cte",mascota_cte,bebida)\nVALUES\n')
+    file.write('INSERT INTO cliente (id_cliente, nombre_cte, ap_pat_cte, ap_mat_cte, correo_cte, telefono_cte, estado_cte, municipio_cte, colonia_cte, calle_cte, cod_postal_cte,mascota_cte,bebida)\nVALUES\n')
 
     for i in range(1, num_clients + 1):
         id_cliente = str(i)
@@ -190,51 +194,45 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
 
 print("El archivo de clientes sido creado exitosamente.")
 
-
-##RUTA 2 Talleres
-ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\Taller.txt"
+#_______________________________________________________________________________________________________________________________________________
+##RUTA 2 Cargo_Empleado
+ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\Cargo_Empleado.txt"
 directorio = os.path.dirname(ruta_completa)
 if not os.path.exists(directorio):
     os.makedirs(directorio)
 #Cliente 
 with open(ruta_completa, 'w', encoding='utf-8') as file:
-    file.write('INSERT INTO cliente ("Id_Cliente", nombre_cte, ap_pat_cte, ap_mat_cte, correo_cte, "telefono_cte", estado_cte, municipio_cte, colonia_cte, calle_cte, "cod_postal_cte",mascota_cte,bebida)\nVALUES\n')
+    file.write('INSERT INTO cargo_empleado (Id_cargo,nombre_cargo)\nVALUES\n')
+    
+    Cargos_exist = [
+        "Mecanico Automotriz",
+        "Jefe de Taller",
+        "Recepcionista de Taller",
+        "Asesor Tecnico",
+        "Especialista en Frenos y Suspension",
+        "Especialista en  Sistemas Electricos",
+        "Especialista en Transmisiones",
+        "Mecanico de Carroceria y Pintura",
+        "Auxiliar de Mecanico",
+        "Especialista en Aire Acondicionado Automotriz",
+        "Especialista en Neumaticos y Alineacion",
+        "Gerente de Servicio",
+        "Especialista en motores"
+        ]
 
-    for i in range(1, num_clients + 1):
-        id_cliente = str(i)
-        unique_id_cliente.add(id_cliente)
-        nombre = fake.first_name()
-        ap_pat = fake.last_name()
-        ap_mat = fake.last_name()
-        correo = genera_correo(nombre, ap_pat)
-        estado = fake.state()
-        telefono = genera_telefono(estado)
-        municipio = fake.municipality(estado)
-        colonia = fake.street_name()
-        calle = fake.street_address()
-        cod_postal = fake.postal_code(municipio)
-        mascota = fake.animales_cte()
-        bebida = fake.bebida_cte()
-
+    for i in range(len(Cargos_exist)):
+        id_cargo_empleado = str(i+1)
+        id_cargo_empleado = id_cargo_empleado + str(random.randint(0,100))
+        unique_id_cargo_empleado.add(id_cargo_empleado)
+        nombre_cargo = Cargos_exist[i]
+        
         # Escapando comillas simples en los valores para evitar errores en SQL
-        nombre = nombre.replace("'", "''")
-        ap_pat = ap_pat.replace("'", "''")
-        ap_mat = ap_mat.replace("'", "''")
-        correo = correo.replace("'", "''")
-        telefono = telefono.replace("'", "''")
-        estado = estado.replace("'", "''")
-        municipio = municipio.replace("'", "''")
-        colonia = colonia.replace("'", "''")
-        calle = calle.replace("'", "''")
-        cod_postal = cod_postal.replace("'", "''")
-        mascota = mascota.replace("'", "''")
-        bebida = bebida.replace("'", "''")
+        nombre_cargo = nombre_cargo.replace("'", "''")
+        file.write(f"('{id_cargo_empleado}', '{nombre_cargo}')")
 
-        file.write(f"('{id_cliente}', '{nombre}', '{ap_pat}', '{ap_mat}', '{correo}', '{telefono}', '{estado}', '{municipio}', '{colonia}', '{calle}', '{cod_postal}','{mascota}','{bebida}')")
-
-        if i < num_clients:
+        if i < len(Cargos_exist):
             file.write(",\n")
         else:
             file.write(";\n")
 
-print("El archivo ha sido creado exitosamente.")
+print("El archivo Cargo_Empleado ha sido creado exitosamente.")
