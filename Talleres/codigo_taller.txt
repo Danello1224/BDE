@@ -46,8 +46,8 @@ CREATE TABLE public.cargo_empleado
 CREATE TABLE public.taller
 (
 	Id_Taller char (4) NOT NULL,
-	estado  character varying(20) NOT NULL,
-	municipio character varying(20) NOT NULL,
+	estado  character varying(40) NOT NULL,
+	municipio character varying(30) NOT NULL,
 	colonia character varying NOT NULL,
 	calle character varying NOT NULL,
 	cod_postal char(5)  NOT NULL,

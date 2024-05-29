@@ -31,6 +31,40 @@ class MexicoProvider(BaseProvider):
         ]
         return self.random_element(animales)
     
+    #Definicion de mascota_emp
+    def mascot_emp(self):
+        masc=[
+            "Perro",
+            "Gato",
+            "Canario"
+        ]
+        return self.random_element(masc)
+    
+    #Definicion de alimento
+    def alimentos_emp(self):
+        alim=[
+            "Tacos al Pastor",
+            "Enchiladas",
+            "Sopes",
+            "Ceviche",
+            "Pozole",
+            "Chiles en Nogada",
+            "Quesadillas"
+        ]
+        return self.random_element(alim)
+    
+    #definicion de fachada
+    def fachada_taller(self):
+        color = [
+            "Violeta",
+            "Dorado",
+            "Plateado",
+            "Crema",
+            "Borgoña",
+            "Cian"
+        ]
+        return self.random_element(color)
+    
     #definicion de bebida
     def bebida_cte(self):
         bebida =[
@@ -138,14 +172,18 @@ fake = Faker('es_MX')
 fake.add_provider(MexicoProvider)
 
 num_clients = 5170
-num_empleados = 11
+num_empleados = 110
 num_carros = 15 
 
 unique_phone_numbers = set()
 unique_emails = set()
 unique_id_cliente=set()
 unique_id_cargo_empleado=set()
+unique_id_taller=set()
+unique_id_empleado=set()
 
+
+#___________________________________________________________________________________________________________________________________
 ##RUTA 1 Cliente
 ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\Clientes.txt"
 directorio = os.path.dirname(ruta_completa)
@@ -236,3 +274,131 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
             file.write(";\n")
 
 print("El archivo Cargo_Empleado ha sido creado exitosamente.")
+
+
+#_______________________________________________________________________________________________________________________________________________
+##RUTA 3 Taller
+ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\Talleres.txt"
+directorio = os.path.dirname(ruta_completa)
+if not os.path.exists(directorio):
+    os.makedirs(directorio)
+#Taller 
+with open(ruta_completa, 'w', encoding='utf-8') as file:
+    file.write('INSERT INTO taller (Id_Taller,estado,municipio,colonia,calle,cod_postal,telefono,color_fachada)\nVALUES\n')
+
+
+    Taller = {
+                1 : ["Ciudad de Mexico", "Coyoacan", "Campestre Churubusco", "Cerro de Huitzilac 118", "04200"],
+                2 : ["Ciudad de Mexico", "Iztapalapa", "San Juan Cerro", "Silicio 4", "09839"],
+                3 : ["Ciudad de Mexico", "Tlalpan", "San Andres Totoltepec", "Cam. Viejo a San Pedro Martir 70", "14650"],
+                4 : ["Jalisco", "Guadalajara", "Alamo Industrial", "Refineria 1605", "44490"],
+                5 : ["Jalisco", "Zapopan", "Los Maestros", "Paulino Navarro 2040", "45150"],
+                6 : ["Jalisco", "Zapopan", "Real Vallarta", "Leonardo Da Vinci 5058", "45020"],
+                7 : ["Nuevo Leon", "Monterrey", "Centro", "Serafin Peña 745 Nte", "64000"],
+                8 : ["Nuevo Leon", "San Nicolas de los Garza", "Los Puentes 2do Sector", "Av. Las Puentes 106", "66460"],
+                9 : ["Nuevo Leon", "Apodaca", "Moderno Apodaca", "Padre Mier 601-A", "66600"],
+                10 : ["Puebla", "Tehuacan", "Aquiles Serdan", "Calle 20 Nte 204", "75750"],
+                11 : ["Puebla", "Puebla", "Resurgimiento Cd. Nte", "C.26 Nte. 408", "72370"],
+                12 : ["Puebla", "Atlixco", "Revolucion", "Emiliano Zapata 1009", "74270"],
+                13 : ["Hidalgo", "Pachuca de Soto", "Javier Rojo Gomez", "C. Agricultura 203", "42030"],
+                14 : ["Hidalgo", "Pachuca de Soto", "Doctores", "Dr. Eliseo Ramirez Ulloa 1107", "42090"],
+                15 : ["Ciudad de Mexico", "Benito Juarez", "Portales", "Emiliano Zapata Num. 184", "03300"]
+            }
+
+    
+    for i in range(1,16):
+        id_taller = str(i+1)
+        id_taller = id_taller + str(random.randint(0,10))
+        unique_id_taller.add(id_taller)
+        dataT = Taller[i]
+        estado,municipio,colonia,calle,cod_postal= dataT
+        telefono = genera_telefono(estado)
+        color_fachada = fake.fachada_taller()
+        
+
+        # Escapando comillas simples en los valores para evitar errores en SQL
+        estado = estado.replace("'", "''")
+        municipio = municipio.replace("'", "''")
+        colonia = colonia.replace("'", "''")
+        calle = calle.replace("'", "''")
+        cod_postal = cod_postal.replace("'", "''")
+        telefono = telefono.replace("'", "''")
+        color_fachada = color_fachada.replace("'", "''")
+        
+        
+        file.write(f"('{id_taller}', '{estado}','{municipio}','{colonia}','{calle}','{cod_postal}','{telefono}','{color_fachada}')")
+
+        if i < 16:
+            file.write(",\n")
+        else:
+            file.write(";\n")
+
+print("El archivo taller ha sido creado exitosamente.")
+
+
+#_______________________________________________________________________________________________________________________________________________
+##RUTA 4 empleado
+ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\Empleado.txt"
+directorio = os.path.dirname(ruta_completa)
+if not os.path.exists(directorio):
+    os.makedirs(directorio)
+#Empleado
+with open(ruta_completa, 'w', encoding='utf-8') as file:
+    file.write('INSERT INTO empleado (Id_Empleado,fk_id_cargo,fk_id_taller,nombre_emp,ap_pat_emp,ap_mat_emp,correo_emp,telefono_emp,mascotas_emp,anio_nacimiento,alimento)\nVALUES\n')
+
+    Cantidad_Empleados =[10,10,10,10,10,10,10,10,10,5,5,5,5]
+    valor=[1,2,3,4,5,6,7,8,9,10,11,12,13]
+    combinacion_emp = dict(zip(valor, [[u_id, cant] for u_id, cant in zip(unique_id_cargo_empleado, Cantidad_Empleados)]))
+    
+    empleados_taller=[7,7,7,7,7,7,7,7,7,7,7,7,7,7,12]
+    valor_t=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    combinacion_emp_tall = dict(zip(valor_t,[[u_id2,cant2] for u_id2,cant2 in zip(unique_id_taller,empleados_taller)]))
+
+    for i in range(1,num_empleados+1):
+        id_empleado = str(i)
+        unique_id_empleado.add(id_empleado)
+        asigna = True
+        while asigna:
+            rand = random.randint(1,13)
+            if combinacion_emp[rand][1] != 0:
+                fk_id_cargo= combinacion_emp[rand][0]
+                combinacion_emp[rand][1]= combinacion_emp[rand][1]-1
+                asigna= False
+                break
+        asigna2 = True
+        while asigna2:
+            rand2 = random.randint(1,15)
+            if combinacion_emp_tall[rand2][1] != 0:
+                fk_id_taller= combinacion_emp_tall[rand2][0]
+                combinacion_emp_tall[rand2][1]= combinacion_emp_tall[rand2][1]-1
+                asigna2= False
+                break
+        nombre = fake.first_name()
+        ap_pat = fake.last_name()
+        ap_mat = fake.last_name()
+        correo = genera_correo(nombre, ap_pat)
+        telefono = genera_telefono(estado)
+        mascota_emp =fake.mascot_emp()
+        Alimento=fake.alimentos_emp()
+        Año_nacimiento= random.randint(1960,2000)
+
+        # Escapando comillas simples en los valores para evitar errores en SQL
+        nombre = nombre.replace("'", "''")
+        ap_pat = ap_pat.replace("'", "''")
+        ap_mat = ap_mat.replace("'", "''")
+        correo = correo.replace("'", "''")
+        telefono = telefono.replace("'", "''")
+        mascota_emp =mascota_emp.replace("'", "''")
+        Alimento=Alimento.replace("'", "''")
+        file.write(f"('{id_empleado}', '{fk_id_cargo}','{fk_id_taller}','{nombre}','{ap_pat}','{ap_mat}','{correo}','{telefono}','{mascota_emp}','{Alimento}','{Año_nacimiento}')")
+
+        if i < num_empleados:
+            file.write(",\n")
+        else:
+            file.write(";\n")
+
+print("El archivo Empleados ha sido creado exitosamente.")
+
+
+
+
