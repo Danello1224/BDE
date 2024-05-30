@@ -59,6 +59,8 @@ CREATE TABLE public.taller
 CREATE TABLE public.empleado
 (
 	Id_Empleado char (5) NOT NULL,
+	id_taller char(4) NOT NULL,
+	id_cargo char(4) NOT NULL,
 	nombre_emp  character varying(20) NOT NULL,
 	ap_pat_emp character varying(20) NOT NULL,
 	ap_mat_emp character varying(20),
@@ -71,29 +73,28 @@ CREATE TABLE public.empleado
 );
 
 ALTER TABLE IF EXISTS public.empleado
-    ADD CONSTRAINT fk_id_cargo FOREIGN KEY (Id_Empleado)
+    ADD CONSTRAINT fk_id_cargo FOREIGN KEY (id_cargo)
     REFERENCES public.cargo_empleado (Id_cargo) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.empleado
-    ADD CONSTRAINT fk_id_taller FOREIGN KEY (Id_Empleado)
+    ADD CONSTRAINT fk_id_taller FOREIGN KEY (id_taller)
     REFERENCES public.taller (Id_Taller) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 
 CREATE TABLE public.coche
 (
     Id_coche char (5) NOT NULL,
+    id_cliente char (5) NOT NULL,
     matricula char (7)  NOT NULL,
     marca character varying(20) NOT NULL,
     color character varying (20) NOT NULL,
     transmision character varying (20) NOT NULL,
     marca_neumaticos character varying (30) NOT NULL,
     PRIMARY KEY (Id_coche),
-    CONSTRAINT fk_Id_Cliente FOREIGN KEY (Id_coche)
+    CONSTRAINT fk_Id_Cliente FOREIGN KEY (Id_cliente)
         REFERENCES public.cliente (Id_Cliente) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -102,19 +103,19 @@ CREATE TABLE public.coche
 CREATE TABLE public.reparacion
 (
 	 Id_reparacion   char (6) NOT NULL, 
+	 id_coche char (5) NOT NULL,
+	 id_empleado char (4) NOT NULL,
 	 PRIMARY KEY (Id_reparacion)
 );
 
 ALTER TABLE IF EXISTS public.reparacion
-    ADD CONSTRAINT  fk_Id_coche FOREIGN KEY (Id_reparacion)
+    ADD CONSTRAINT  fk_Id_coche FOREIGN KEY (id_coche)
     REFERENCES public.coche (Id_coche) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 
 ALTER TABLE IF EXISTS public.reparacion
-    ADD CONSTRAINT  fk_Id_empleado FOREIGN KEY (Id_reparacion)
+    ADD CONSTRAINT  fk_Id_empleado FOREIGN KEY (id_empleado)
     REFERENCES public.empleado (Id_Empleado) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;

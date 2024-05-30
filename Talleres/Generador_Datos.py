@@ -268,7 +268,7 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         nombre_cargo = nombre_cargo.replace("'", "''")
         file.write(f"('{id_cargo_empleado}', '{nombre_cargo}')")
 
-        if i < len(Cargos_exist):
+        if i < len(Cargos_exist)-1:
             file.write(",\n")
         else:
             file.write(";\n")
@@ -328,7 +328,7 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         
         file.write(f"('{id_taller}', '{estado}','{municipio}','{colonia}','{calle}','{cod_postal}','{telefono}','{color_fachada}')")
 
-        if i < 16:
+        if i < 15:
             file.write(",\n")
         else:
             file.write(";\n")
@@ -344,15 +344,17 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
 #Empleado
 with open(ruta_completa, 'w', encoding='utf-8') as file:
-    file.write('INSERT INTO empleado (Id_Empleado,fk_id_cargo,fk_id_taller,nombre_emp,ap_pat_emp,ap_mat_emp,correo_emp,telefono_emp,mascotas_emp,anio_nacimiento,alimento)\nVALUES\n')
+    file.write('INSERT INTO empleado (Id_Empleado,id_cargo,id_taller,nombre_emp,ap_pat_emp,ap_mat_emp,correo_emp,telefono_emp,mascotas_emp,anio_nacimiento,alimento)\nVALUES\n')
 
     Cantidad_Empleados =[10,10,10,10,10,10,10,10,10,5,5,5,5]
-    valor=[1,2,3,4,5,6,7,8,9,10,11,12,13]
+    valor=list(range(1,14))
     combinacion_emp = dict(zip(valor, [[u_id, cant] for u_id, cant in zip(unique_id_cargo_empleado, Cantidad_Empleados)]))
+    print(combinacion_emp)
     
     empleados_taller=[7,7,7,7,7,7,7,7,7,7,7,7,7,7,12]
-    valor_t=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    valor_t=list(range(1,16))
     combinacion_emp_tall = dict(zip(valor_t,[[u_id2,cant2] for u_id2,cant2 in zip(unique_id_taller,empleados_taller)]))
+    print(combinacion_emp_tall)
 
     for i in range(1,num_empleados+1):
         id_empleado = str(i)
@@ -365,6 +367,7 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
                 combinacion_emp[rand][1]= combinacion_emp[rand][1]-1
                 asigna= False
                 break
+        
         asigna2 = True
         while asigna2:
             rand2 = random.randint(1,15)
@@ -390,7 +393,7 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         telefono = telefono.replace("'", "''")
         mascota_emp =mascota_emp.replace("'", "''")
         Alimento=Alimento.replace("'", "''")
-        file.write(f"('{id_empleado}', '{fk_id_cargo}','{fk_id_taller}','{nombre}','{ap_pat}','{ap_mat}','{correo}','{telefono}','{mascota_emp}','{Alimento}','{Año_nacimiento}')")
+        file.write(f"('{id_empleado}', '{fk_id_cargo}','{fk_id_taller}','{nombre}','{ap_pat}','{ap_mat}','{correo}','{telefono}','{mascota_emp}','{Año_nacimiento}','{Alimento}')")
 
         if i < num_empleados:
             file.write(",\n")
