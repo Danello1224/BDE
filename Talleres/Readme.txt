@@ -1,5 +1,6 @@
-Fijate, que no sabia crear carpetas
+YA ESTA ESTA MMADA
 
-Haha
+BUENO CASI FALTA LO DE MARCAS Y NEUMATICOS PERO YA SI COPIAS Y PEGAS EL TXT ALV 
+FUNCIONA !!!!!
 
-Aqui sera de la base de datos de taller
+:3
