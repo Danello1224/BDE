@@ -78,8 +78,38 @@ class MexicoProvider(BaseProvider):
     #define marca
     def marca_gen_c(self):
         marca_c =[
+            "Audi",
+            "Chevrolet",
+            "Ferrari",
+            "Aston Martin",
+            "Honda",
+            "Jaguar",
+            "Jeep",
+            "Kia",
+            "Lamborguini",
+            "Mercedes-Benz",
+            "Nissan",
+            "Porsche",
+            "Tesla",
+            "Toyota",
+            "Volkswagen",
             "Mazda",
-            "Renault"
+            "Chrysler",
+            "Renault",
+            "Alfa Romeo",
+            "Bentley",
+            "BMW",
+            "Cadillac",
+            "Dodge",
+            "Ford",
+            "Hyundai",
+            "Koenigsegg",
+            "Land Rover",
+            "Maserati",
+            "Peugeot",
+            "Rimac",
+            "SSC",
+            "Subaru"
         ]
         return self.random_element(marca_c)
     
@@ -106,8 +136,11 @@ class MexicoProvider(BaseProvider):
     #define marca_neumaticos
     def marca_neumaticos(self):
         mark_ne=[
-            "michelin",
-            "Nose we"
+            "Michelin",
+            "Dunlop",
+            "Continental",
+            "Brigdestone",
+            "Pirelli"
         ]
         return self.random_element(mark_ne)
     

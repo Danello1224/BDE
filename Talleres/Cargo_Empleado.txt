@@ -1,15 +1,15 @@
 INSERT INTO cargo_empleado (Id_cargo,nombre_cargo)
 VALUES
-('138', 'Mecanico Automotriz'),
-('284', 'Jefe de Taller'),
-('38', 'Recepcionista de Taller'),
-('470', 'Asesor Tecnico'),
-('522', 'Especialista en Frenos y Suspension'),
-('689', 'Especialista en  Sistemas Electricos'),
-('783', 'Especialista en Transmisiones'),
-('859', 'Mecanico de Carroceria y Pintura'),
-('97', 'Auxiliar de Mecanico'),
-('1041', 'Especialista en Aire Acondicionado Automotriz'),
-('1196', 'Especialista en Neumaticos y Alineacion'),
-('1212', 'Gerente de Servicio'),
-('1366', 'Especialista en motores');
+('119', 'Mecanico Automotriz'),
+('254', 'Jefe de Taller'),
+('321', 'Recepcionista de Taller'),
+('40', 'Asesor Tecnico'),
+('518', 'Especialista en Frenos y Suspension'),
+('642', 'Especialista en  Sistemas Electricos'),
+('712', 'Especialista en Transmisiones'),
+('889', 'Mecanico de Carroceria y Pintura'),
+('940', 'Auxiliar de Mecanico'),
+('1050', 'Especialista en Aire Acondicionado Automotriz'),
+('1124', 'Especialista en Neumaticos y Alineacion'),
+('1257', 'Gerente de Servicio'),
+('1310', 'Especialista en motores');
