@@ -32,7 +32,7 @@ WHERE cliente.mascota = 'Esquilax' ;
 --Consulta 3
 -- Obtener todos los datos del taller, asi como los empleados y su cargo, de todos los vehículos que son de transmisión automática
 ------------
-SELECT cargo_empleado.*,taller.*,empleado.*,reparacion.*,coche.*
+SELECT cargo_empleado.*,taller.*,empleado.*
 FROM empleado
 JOIN taller
 ON taller.Id_taller = empleado.Id_taller

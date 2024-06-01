@@ -9,14 +9,14 @@ Version:1.0
 */
 ---------------------
 /*Crear una Base de datos*/
-CREATE DATABASE dsb
+CREATE DATABASE dsb_t
 WITH
 OWNER=postgres
 ENCODING= 'UTF8'
 TABLESPACE=pg_default
 CONNECTION LIMIT=-1;
 ---------------------
-\c dsb
+\c dsb_t
 
 CREATE TABLE public.cliente
 (
@@ -69,14 +69,14 @@ CREATE TABLE public.empleado
 ALTER TABLE IF EXISTS public.empleado
     ADD CONSTRAINT fk_id_cargo FOREIGN KEY (id_cargo)
     REFERENCES public.cargo_empleado (Id_cargo) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT;
 
 ALTER TABLE IF EXISTS public.empleado
     ADD CONSTRAINT fk_id_taller FOREIGN KEY (id_taller)
     REFERENCES public.taller (Id_Taller) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT;
 
 CREATE TABLE public.coche
 (
@@ -87,8 +87,8 @@ CREATE TABLE public.coche
     PRIMARY KEY (Id_coche),
     CONSTRAINT fk_Id_Cliente FOREIGN KEY (Id_cliente)
         REFERENCES public.cliente (Id_Cliente) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE public.reparacion
@@ -102,11 +102,11 @@ CREATE TABLE public.reparacion
 ALTER TABLE IF EXISTS public.reparacion
     ADD CONSTRAINT  fk_Id_coche FOREIGN KEY (id_coche)
     REFERENCES public.coche (Id_coche) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT;
 
 ALTER TABLE IF EXISTS public.reparacion
     ADD CONSTRAINT  fk_Id_empleado FOREIGN KEY (id_empleado)
     REFERENCES public.empleado (Id_Empleado) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT;

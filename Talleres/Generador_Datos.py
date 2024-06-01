@@ -237,7 +237,7 @@ def genera_correo(nombre, apellido):
         "@yahoo.com"
     ]
     dominio = random.choice(correo_tipo)
-    base_correo = f"{nombre.lower()}.{apellido.lower()}"
+    base_correo = f"{nombre.lower().replace(' ', '')}.{apellido.lower().replace(' ', '')}"
     correo = f"{base_correo}{dominio}"
     sufijo = 1
     
