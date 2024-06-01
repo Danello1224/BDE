@@ -1,0 +1,16 @@
+ALTER TABLE taller ADD COLUMN color_fachada character varying (20);
+UPDATE taller SET color_fachada = 'Cian' WHERE Id_Taller = '1T';
+UPDATE taller SET color_fachada = 'Dorado' WHERE Id_Taller = '2T';
+UPDATE taller SET color_fachada = 'Crema' WHERE Id_Taller = '3T';
+UPDATE taller SET color_fachada = 'Borgoña' WHERE Id_Taller = '4T';
+UPDATE taller SET color_fachada = 'Cian' WHERE Id_Taller = '5T';
+UPDATE taller SET color_fachada = 'Cian' WHERE Id_Taller = '6T';
+UPDATE taller SET color_fachada = 'Violeta' WHERE Id_Taller = '7T';
+UPDATE taller SET color_fachada = 'Violeta' WHERE Id_Taller = '8T';
+UPDATE taller SET color_fachada = 'Cian' WHERE Id_Taller = '9T';
+UPDATE taller SET color_fachada = 'Violeta' WHERE Id_Taller = '10T';
+UPDATE taller SET color_fachada = 'Plateado' WHERE Id_Taller = '11T';
+UPDATE taller SET color_fachada = 'Crema' WHERE Id_Taller = '12T';
+UPDATE taller SET color_fachada = 'Crema' WHERE Id_Taller = '13T';
+UPDATE taller SET color_fachada = 'Cian' WHERE Id_Taller = '14T';
+UPDATE taller SET color_fachada = 'Dorado' WHERE Id_Taller = '15T';

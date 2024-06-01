@@ -31,8 +31,6 @@ CREATE TABLE public.cliente
     colonia_cte character varying  NOT NULL,
     calle_cte character varying  NOT NULL,
     cod_postal_cte char (5) NOT NULL,
-    mascota_cte character varying (20) NOT NULL,
-    bebida character varying (20) NOT NULL,
     PRIMARY KEY (id_cliente)
 );
 
@@ -52,7 +50,6 @@ CREATE TABLE public.taller
 	calle character varying NOT NULL,
 	cod_postal char(5)  NOT NULL,
 	telefono char (10) NOT NULL,
-	color_fachada character varying (20) NOT NULL,
 	PRIMARY KEY (Id_Taller)
 );
 
@@ -66,9 +63,6 @@ CREATE TABLE public.empleado
 	ap_mat_emp character varying(20),
 	correo_emp character varying(50) NOT NULL,
 	telefono_emp char (10)  NOT NULL,
-	mascotas_emp character varying (20) NOT NULL,
-	anio_nacimiento char (4) NOT NULL,
-	alimento character varying (30),
 	PRIMARY KEY (Id_Empleado)
 );
 
@@ -90,9 +84,6 @@ CREATE TABLE public.coche
     id_cliente char (5) NOT NULL,
     matricula char (7)  NOT NULL UNIQUE,
     marca character varying(20) NOT NULL,
-    color character varying (20) NOT NULL,
-    transmision character varying (20) NOT NULL,
-    marca_neumaticos character varying (30) NOT NULL,
     PRIMARY KEY (Id_coche),
     CONSTRAINT fk_Id_Cliente FOREIGN KEY (Id_cliente)
         REFERENCES public.cliente (Id_Cliente) MATCH SIMPLE

@@ -331,7 +331,7 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
 #Cliente 
 with open(ruta_completa, 'w', encoding='utf-8') as file:
-    file.write('INSERT INTO cliente (id_cliente, nombre_cte, ap_pat_cte, ap_mat_cte, correo_cte, telefono_cte, estado_cte, municipio_cte, colonia_cte, calle_cte, cod_postal_cte,mascota_cte,bebida)\nVALUES\n')
+    file.write('INSERT INTO cliente (id_cliente, nombre_cte, ap_pat_cte, ap_mat_cte, correo_cte, telefono_cte, estado_cte, municipio_cte, colonia_cte, calle_cte, cod_postal_cte)\nVALUES\n')
 
     for i in range(1, num_clients + 1):
         id_cliente = str(i)
@@ -346,8 +346,6 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         colonia = fake.street_name()
         calle = fake.street_address()
         cod_postal = fake.postal_code(municipio)
-        mascota = fake.animales_cte()
-        bebida = fake.bebida_cte()
 
         # Escapando comillas simples en los valores para evitar errores en SQL
         nombre = nombre.replace("'", "''")
@@ -360,10 +358,8 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         colonia = colonia.replace("'", "''")
         calle = calle.replace("'", "''")
         cod_postal = cod_postal.replace("'", "''")
-        mascota = mascota.replace("'", "''")
-        bebida = bebida.replace("'", "''")
 
-        file.write(f"('{id_cliente}', '{nombre}', '{ap_pat}', '{ap_mat}', '{correo}', '{telefono}', '{estado}', '{municipio}', '{colonia}', '{calle}', '{cod_postal}','{mascota}','{bebida}')")
+        file.write(f"('{id_cliente}', '{nombre}', '{ap_pat}', '{ap_mat}', '{correo}', '{telefono}', '{estado}', '{municipio}', '{colonia}', '{calle}', '{cod_postal}')")
 
         if i < num_clients:
             file.write(",\n")
@@ -371,6 +367,33 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
             file.write(";\n")
 
 print("El archivo de clientes sido creado exitosamente.")
+
+
+
+#___________________________________________________________________________________________________________________________________
+##RUTA 1.1 Actualizado
+ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\ClientesUpdate.txt"
+directorio = os.path.dirname(ruta_completa)
+if not os.path.exists(directorio):
+    os.makedirs(directorio)
+#Cliente ap_pat_cte
+with open(ruta_completa, 'w', encoding='utf-8') as file:
+
+    file.write(f"ALTER TABLE cliente ADD COLUMN mascota character varying (20);\n")
+    file.write(f"ALTER TABLE cliente ADD COLUMN bebida character varying (20);\n")
+    for i in range(1, num_clients + 1):
+        mascota = fake.animales_cte()
+        bebida = fake.bebida_cte()
+
+        # Escapando comillas simples en los valores para evitar errores en SQL
+        mascota = mascota.replace("'", "''")
+        bebida = bebida.replace("'", "''")
+
+        file.write(f"UPDATE cliente SET mascota = '{mascota}' WHERE id_cliente = '{i}';\n")
+        file.write(f"UPDATE cliente SET bebida = '{bebida}' WHERE id_cliente = '{i}';\n")
+
+print("El archivo de clientes ha sido actualizado exitosamente.")
+
 
 #_______________________________________________________________________________________________________________________________________________
 ##RUTA 2 Cargo_Empleado
@@ -424,7 +447,7 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
 #Taller 
 with open(ruta_completa, 'w', encoding='utf-8') as file:
-    file.write('INSERT INTO taller (Id_Taller,estado,municipio,colonia,calle,cod_postal,telefono,color_fachada)\nVALUES\n')
+    file.write('INSERT INTO taller (Id_Taller,estado,municipio,colonia,calle,cod_postal,telefono)\nVALUES\n')
 
 
     Taller = {
@@ -448,12 +471,11 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
     
     for i in range(1,16):
         id_taller = str(i)
-        id_taller = id_taller + str(random.randint(0,10))
+        id_taller = id_taller + str("T")
         unique_id_taller.append(id_taller)
         dataT = Taller[i]
         estado,municipio,colonia,calle,cod_postal= dataT
         telefono = genera_telefono(estado)
-        color_fachada = fake.fachada_taller()
         
 
         # Escapando comillas simples en los valores para evitar errores en SQL
@@ -463,10 +485,9 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         calle = calle.replace("'", "''")
         cod_postal = cod_postal.replace("'", "''")
         telefono = telefono.replace("'", "''")
-        color_fachada = color_fachada.replace("'", "''")
         
         
-        file.write(f"('{id_taller}', '{estado}','{municipio}','{colonia}','{calle}','{cod_postal}','{telefono}','{color_fachada}')")
+        file.write(f"('{id_taller}', '{estado}','{municipio}','{colonia}','{calle}','{cod_postal}','{telefono}')")
 
         if i < 15:
             file.write(",\n")
@@ -474,6 +495,25 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
             file.write(";\n")
 
 print("El archivo taller ha sido creado exitosamente.")
+
+
+
+#_______________________________________________________________________________________________________________________________________________
+##RUTA 3.1 Taller UPDATE
+ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\TalleresUpdate.txt"
+directorio = os.path.dirname(ruta_completa)
+if not os.path.exists(directorio):
+    os.makedirs(directorio)
+#Taller 
+with open(ruta_completa, 'w', encoding='utf-8') as file:
+    
+    file.write(f"ALTER TABLE taller ADD COLUMN color_fachada character varying (20);\n")
+    for i in range(1,16):
+        color_fachada = fake.fachada_taller()
+        color_fachada = color_fachada.replace("'", "''")
+    
+        file.write(f"UPDATE taller SET color_fachada = '{color_fachada}' WHERE Id_Taller = '{i}T';\n")
+print("El archivo taller ha sido actualizado exitosamente.")
 
 
 #_______________________________________________________________________________________________________________________________________________
@@ -484,7 +524,7 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
 #Empleado
 with open(ruta_completa, 'w', encoding='utf-8') as file:
-    file.write('INSERT INTO empleado (Id_Empleado,id_cargo,id_taller,nombre_emp,ap_pat_emp,ap_mat_emp,correo_emp,telefono_emp,mascotas_emp,anio_nacimiento,alimento)\nVALUES\n')
+    file.write('INSERT INTO empleado (Id_Empleado,id_cargo,id_taller,nombre_emp,ap_pat_emp,ap_mat_emp,correo_emp,telefono_emp)\nVALUES\n')
 
 #-------------- Generacion de listas para combinacion
     #Para cada cargo hay 
@@ -544,9 +584,6 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         ap_mat = fake.last_name()
         correo = genera_correo(nombre, ap_pat)
         telefono = genera_telefono(estado)
-        mascota_emp =fake.mascot_emp()
-        Alimento=fake.alimentos_emp()
-        Año_nacimiento= random.randint(1960,2000)
 
         # Escapando comillas simples en los valores para evitar errores en SQL
         nombre = nombre.replace("'", "''")
@@ -554,9 +591,7 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         ap_mat = ap_mat.replace("'", "''")
         correo = correo.replace("'", "''")
         telefono = telefono.replace("'", "''")
-        mascota_emp =mascota_emp.replace("'", "''")
-        Alimento=Alimento.replace("'", "''")
-        file.write(f"('{id_empleado}', '{fk_id_cargo}','{fk_id_taller}','{nombre}','{ap_pat}','{ap_mat}','{correo}','{telefono}','{mascota_emp}','{Año_nacimiento}','{Alimento}')")
+        file.write(f"('{id_empleado}', '{fk_id_cargo}','{fk_id_taller}','{nombre}','{ap_pat}','{ap_mat}','{correo}','{telefono}')")
 
         if i < num_empleados:
             file.write(",\n")
@@ -564,6 +599,38 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
             file.write(";\n")
 
 print("El archivo Empleados ha sido creado exitosamente.")
+
+
+
+
+#_______________________________________________________________________________________________________________________________________________
+##RUTA 4.1 empleado UPDATE
+ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\EmpleadoUpdate.txt"
+directorio = os.path.dirname(ruta_completa)
+if not os.path.exists(directorio):
+    os.makedirs(directorio)
+#Empleado
+with open(ruta_completa, 'w', encoding='utf-8') as file:
+    
+    file.write(f"ALTER TABLE empleado ADD COLUMN mascotas_emp character varying (20);\n")
+    file.write(f"ALTER TABLE empleado ADD COLUMN anio_nacimiento char (4);\n")
+    file.write(f"ALTER TABLE empleado ADD COLUMN alimento character varying (30);\n")
+
+#-----------------------------------------------------
+    for i in range(1,num_empleados+1):
+        mascota_emp =fake.mascot_emp()
+        Alimento=fake.alimentos_emp()
+        Año_nacimiento= random.randint(1960,2000)
+
+        # Escapando comillas simples en los valores para evitar errores en SQL
+        mascota_emp =mascota_emp.replace("'", "''")
+        Alimento=Alimento.replace("'", "''")
+        
+        file.write(f"UPDATE empleado SET mascotas_emp = '{mascota_emp}' WHERE Id_Empleado = '{i}';\n")
+        file.write(f"UPDATE empleado SET alimento = '{Alimento}' WHERE Id_Empleado = '{i}';\n")
+        file.write(f"UPDATE empleado SET anio_nacimiento = '{Año_nacimiento}' WHERE Id_Empleado = '{i}';\n")
+        
+print("El archivo Empleados ha sido actualizado exitosamente.")
 
 
 #_______________________________________________________________________________________________________________________________________________
@@ -574,7 +641,7 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
 #Cliente 
 with open(ruta_completa, 'w', encoding='utf-8') as file:
-    file.write('INSERT INTO coche (Id_coche,id_cliente,matricula,marca,color,transmision,marca_neumaticos)\nVALUES\n')
+    file.write('INSERT INTO coche (Id_coche,id_cliente,matricula,marca)\nVALUES\n')
     
     fk_cliente_lis=list(unique_id_cliente)
     
@@ -585,18 +652,12 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
         matricula = fake.matricula_gen(unique_matricula)
         unique_matricula.add(matricula)
         marca = fake.marca_gen_c()
-        color = fake.color_carro()
-        transmision = fake.transmision_carro()
-        marca_neumaticos = fake.marca_neumaticos()
         
         # Escapando comillas simples en los valores para evitar errores en SQL
         matricula = matricula.replace("'", "''")
         marca = marca.replace("'", "''")
-        color = color.replace("'", "''")
-        transmision = transmision.replace("'", "''")
-        marca_neumaticos = marca_neumaticos.replace("'", "''")
         
-        file.write(f"('{id_coche}', '{fk_id_cliente}', '{matricula}', '{marca}', '{color}', '{transmision}', '{marca_neumaticos}')")
+        file.write(f"('{id_coche}', '{fk_id_cliente}', '{matricula}', '{marca}')")
 
         if i < num_carros:
             file.write(",\n")
@@ -604,6 +665,40 @@ with open(ruta_completa, 'w', encoding='utf-8') as file:
             file.write(";\n")
 
 print("El archivo Coches ha sido creado exitosamente.")
+
+
+
+
+
+#_______________________________________________________________________________________________________________________________________________
+##RUTA 5.1 Coches Update
+ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Talleres\CochesUpdate.txt"
+directorio = os.path.dirname(ruta_completa)
+if not os.path.exists(directorio):
+    os.makedirs(directorio)
+#Cliente 
+with open(ruta_completa, 'w', encoding='utf-8') as file:
+        
+    file.write(f"ALTER TABLE coche ADD COLUMN color character varying (20);\n")
+    file.write(f"ALTER TABLE coche ADD COLUMN transmision character varying (20);\n")
+    file.write(f"ALTER TABLE coche ADD COLUMN marca_neumaticos character varying (30);\n")
+    
+    
+    for i in range(1,num_carros+1):
+        color = fake.color_carro()
+        transmision = fake.transmision_carro()
+        marca_neumaticos = fake.marca_neumaticos()        
+        
+        # Escapando comillas simples en los valores para evitar errores en SQL
+        color = color.replace("'", "''")
+        transmision = transmision.replace("'", "''")
+        marca_neumaticos = marca_neumaticos.replace("'", "''")
+        
+        file.write(f"UPDATE coche SET color = '{color}' WHERE Id_coche = '{i}';\n")
+        file.write(f"UPDATE coche SET transmision = '{transmision}' WHERE Id_coche = '{i}';\n")
+        file.write(f"UPDATE coche SET marca_neumaticos = '{marca_neumaticos}' WHERE Id_coche = '{i}';\n")
+
+print("El archivo Coches ha sido actualizado exitosamente.")
 
 #_______________________________________________________________________________________________________________________________________________
 ##RUTA 6 Reparaciones (Ultima por fin xd)
@@ -636,8 +731,6 @@ print("El archivo reparaciones ha sido creado exitosamente.")
 
 
 
-
-
 #UNION DE ARCHIVOS
 
 
@@ -660,10 +753,18 @@ file_paths = [r"C:\Users\danel_jaje6pg\Downloads\Talleres\codigo_taller.txt",
               r"C:\Users\danel_jaje6pg\Downloads\Talleres\Reparaciones.txt"
               ]
 
+file_paths_Update = [r"C:\Users\danel_jaje6pg\Downloads\Talleres\ClientesUpdate.txt", 
+              r"C:\Users\danel_jaje6pg\Downloads\Talleres\TalleresUpdate.txt", 
+              r"C:\Users\danel_jaje6pg\Downloads\Talleres\EmpleadoUpdate.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\Talleres\CochesUpdate.txt" 
+              ]
+
 # Nombre del archivo de salida
 output_file_path = r'C:\Users\danel_jaje6pg\Downloads\Talleres\BASE_DATOS_TALLER.txt'
+output_file_path_Update = r'C:\Users\danel_jaje6pg\Downloads\Talleres\BASE_DATOS_TALLER_UPDATE.txt'
 
 # Llamar a la función para unir los archivos
 merge_text_files(file_paths, output_file_path)
+merge_text_files(file_paths_Update, output_file_path_Update)
 
 print("¡Archivos unidos exitosamente!")

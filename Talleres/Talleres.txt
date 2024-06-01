@@ -1,17 +1,17 @@
-INSERT INTO taller (Id_Taller,estado,municipio,colonia,calle,cod_postal,telefono,color_fachada)
+INSERT INTO taller (Id_Taller,estado,municipio,colonia,calle,cod_postal,telefono)
 VALUES
-('15', 'Ciudad de Mexico','Coyoacan','Campestre Churubusco','Cerro de Huitzilac 118','04200','5518606520','Crema'),
-('27', 'Ciudad de Mexico','Iztapalapa','San Juan Cerro','Silicio 4','09839','5660423557','Borgoña'),
-('34', 'Ciudad de Mexico','Tlalpan','San Andres Totoltepec','Cam. Viejo a San Pedro Martir 70','14650','5521088841','Borgoña'),
-('41', 'Jalisco','Guadalajara','Alamo Industrial','Refineria 1605','44490','3472884733','Violeta'),
-('56', 'Jalisco','Zapopan','Los Maestros','Paulino Navarro 2040','45150','3423828013','Violeta'),
-('67', 'Jalisco','Zapopan','Real Vallarta','Leonardo Da Vinci 5058','45020','3421988978','Crema'),
-('79', 'Nuevo Leon','Monterrey','Centro','Serafin Peña 745 Nte','64000','8129161501','Crema'),
-('87', 'Nuevo Leon','San Nicolas de los Garza','Los Puentes 2do Sector','Av. Las Puentes 106','66460','8135890211','Violeta'),
-('93', 'Nuevo Leon','Apodaca','Moderno Apodaca','Padre Mier 601-A','66600','8140608082','Dorado'),
-('102', 'Puebla','Tehuacan','Aquiles Serdan','Calle 20 Nte 204','75750','2483286062','Violeta'),
-('1110', 'Puebla','Puebla','Resurgimiento Cd. Nte','C.26 Nte. 408','72370','2327013344','Plateado'),
-('122', 'Puebla','Atlixco','Revolucion','Emiliano Zapata 1009','74270','2322419844','Crema'),
-('137', 'Hidalgo','Pachuca de Soto','Javier Rojo Gomez','C. Agricultura 203','42030','7753384855','Cian'),
-('145', 'Hidalgo','Pachuca de Soto','Doctores','Dr. Eliseo Ramirez Ulloa 1107','42090','7716158934','Crema'),
-('157', 'Ciudad de Mexico','Benito Juarez','Portales','Emiliano Zapata Num. 184','03300','5584161330','Plateado');
+('1T', 'Ciudad de Mexico','Coyoacan','Campestre Churubusco','Cerro de Huitzilac 118','04200','5510291269'),
+('2T', 'Ciudad de Mexico','Iztapalapa','San Juan Cerro','Silicio 4','09839','5582821827'),
+('3T', 'Ciudad de Mexico','Tlalpan','San Andres Totoltepec','Cam. Viejo a San Pedro Martir 70','14650','5529383300'),
+('4T', 'Jalisco','Guadalajara','Alamo Industrial','Refineria 1605','44490','3327162669'),
+('5T', 'Jalisco','Zapopan','Los Maestros','Paulino Navarro 2040','45150','3439151307'),
+('6T', 'Jalisco','Zapopan','Real Vallarta','Leonardo Da Vinci 5058','45020','3417497488'),
+('7T', 'Nuevo Leon','Monterrey','Centro','Serafin Peña 745 Nte','64000','8121326887'),
+('8T', 'Nuevo Leon','San Nicolas de los Garza','Los Puentes 2do Sector','Av. Las Puentes 106','66460','8119497621'),
+('9T', 'Nuevo Leon','Apodaca','Moderno Apodaca','Padre Mier 601-A','66600','8197388619'),
+('10T', 'Puebla','Tehuacan','Aquiles Serdan','Calle 20 Nte 204','75750','2333268184'),
+('11T', 'Puebla','Puebla','Resurgimiento Cd. Nte','C.26 Nte. 408','72370','2484586310'),
+('12T', 'Puebla','Atlixco','Revolucion','Emiliano Zapata 1009','74270','2767165447'),
+('13T', 'Hidalgo','Pachuca de Soto','Javier Rojo Gomez','C. Agricultura 203','42030','7721461666'),
+('14T', 'Hidalgo','Pachuca de Soto','Doctores','Dr. Eliseo Ramirez Ulloa 1107','42090','7735868238'),
+('15T', 'Ciudad de Mexico','Benito Juarez','Portales','Emiliano Zapata Num. 184','03300','5552055557');
