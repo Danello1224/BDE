@@ -1,0 +1,46 @@
+------------------------------------------------------------------------------------
+-- Consulta 1
+-- Obtener todos los atributos de los vehículos, asi como de los propietarios de los carros que fueron reparados en talleres con fachas de color dorado
+---------
+SELECT coche.* , cliente.*
+FROM coche
+JOIN cliente
+ON cliente.Id_Cliente=coche.Id_Cliente
+JOIN reparacion 
+ON coche.Id_coche=reparacion.Id_coche
+JOIN empleado
+ON reparacion.id_empleado = empleado.id_empleado
+JOIN taller
+ON empleado.id_taller = taller.id_taller
+WHERE taller.color_fachada = 'Dorado';
+-----------------------------------------------------------------------------------
+-- Consulta 2 
+-- Obtener los datos de los mecánicos, asi como su cargo, de todas aquellas personas que repararon carros donde el propietario tiene como mascota al esquilax
+----------
+SELECT cargo_empleado.*,empleado.*
+FROM empleado
+JOIN cargo_empleado
+ON empleado.Id_cargo = cargo_empleado.id_cargo
+JOIN reparacion
+ON reparacion.id_empleado = empleado.id_empleado
+JOIN coche
+ON coche.Id_coche = reparacion.id_coche
+JOIN cliente
+ON cliente.Id_Cliente = coche.Id_Cliente
+WHERE cliente.mascota = 'Esquilax' ;
+----------------------------------------------------------------------------------
+--Consulta 3
+-- Obtener todos los datos del taller, asi como los empleados y su cargo, de todos los vehículos que son de transmisión automática
+------------
+SELECT cargo_empleado.*,taller.*,empleado.*,reparacion.*,coche.*
+FROM empleado
+JOIN taller
+ON taller.Id_taller = empleado.Id_taller
+JOIN cargo_empleado
+ON cargo_empleado.Id_cargo = empleado.Id_cargo
+JOIN reparacion 
+ON reparacion.Id_empleado = empleado.Id_empleado
+JOIN coche
+ON coche.Id_coche = reparacion.Id_coche
+WHERE coche.transmision = 'automatico';
+
