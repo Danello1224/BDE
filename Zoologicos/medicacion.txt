@@ -1,0 +1,5 @@
+INSERT INTO medicacion (id_medicamento,nombre_med)
+VALUES
+('1A','Amoxicilina'),
+('2C','Ciprofloxacino'),
+('3D','Doxiciclina');

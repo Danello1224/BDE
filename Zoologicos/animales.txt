@@ -1,0 +1,4 @@
+INSERT INTO animales (id_animal,nombre_animal,nombre_cientifico,familia,genero,especie,orden,clase,peligro_extincion)
+VALUES
+('1J','Jaguar','Panthera onca','Felidae','Panthera','onca','Carnivora','Mammalia','True'),
+('2G','Gorila de montaña','Gorilla beringei','Hominidae','Gorilla','beringei','Primates','Mammalia','True');

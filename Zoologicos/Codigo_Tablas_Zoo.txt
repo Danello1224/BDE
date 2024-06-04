@@ -1,0 +1,163 @@
+/* 
+Nombre: Saldivar Beltran Daniela
+Asignatura :  IBDE
+Semestre : 2024-2
+Grupo: 02
+Titulo: Zoologicos
+Descripción : Zoologicos y animales
+Version 1.0
+*/
+---------------------------------------
+/* Crear una base de datos*/
+CREATE DATABASE dsb_z
+WITH
+OWNER= postgres
+ENCODING = 'UTF-8'
+TABLESPACE = pg_default
+CONNECTION LIMIT = -1;
+--------------------------------------
+\c dsb_z
+
+CREATE TABLE public.animales
+(
+	id_animal char (5) NOT NULL,
+	nombre_animal character varying (40) NOT NULL,
+	nombre_cientifico character varying (60) NOT NULL,
+	familia character varying (40) NOT NULL,
+	genero character varying (40) NOT NULL,
+	especie character varying (40) NOT NULL,
+	orden character varying (40) NOT NULL,
+	clase character varying (40) NOT NULL,
+	peligro_extincion boolean NOT NULL,
+	PRIMARY KEY (id_animal)
+);
+
+CREATE TABLE public.medicacion 
+(
+	id_medicamento char (4) NOT NULL,
+	nombre_med character varying (40) NOT NULL,
+	PRIMARY KEY (id_medicamento)
+);
+
+CREATE TABLE public.boleto
+(
+	id_boleto char(1) NOT NULL,
+	precio integer NOT NULL,
+	descripcion text NOT NULL,
+	PRIMARY KEY (id_boleto)
+);
+CREATE TABLE public.zoologico
+(
+	id_zoo char(4) NOT NULL,
+	nombre character varying (40) NOT NULL,
+	tamaño numeric NOT NULL,
+	presupuesto bigint NOT NULL,
+	estado character varying (30) NOT NULL,
+	municipio character varying (40) NOT NULL,
+	colonia character varying NOT NULL,
+	calle character varying NOT NULL,
+	cod_postal char (5) NOT NULL,
+	espacios_animales integer NOT NULL,
+	espacios_generales integer NOT NULL,
+	espacios_administrativos integer NOT NULL,
+	tipo_zoo char (7) NOT NULL,
+	PRIMARY KEY (id_zoo)
+);
+
+CREATE TABLE public.especimen
+(
+	id_especie char(5) NOT NULL,
+	id_animal char(5) NOT NULL,
+	id_zoo char(4) NOT NULL,
+	sexo character varying (10) NOT NULL,
+	continente character varying (30) NOT NULL,
+	pais character varying (30) NOT NULL,
+	alimentacion character varying (20) NOT NULL,
+	anio_nacimiento char (4) NOT NULL,
+	PRIMARY KEY (id_especie)
+);
+
+ALTER TABLE IF EXISTS public.especimen
+	ADD CONSTRAINT fk_id_animal FOREIGN KEY (id_animal)
+	REFERENCES public.animales (id_animal) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.especimen
+	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
+	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.tratamiento
+(
+	id_tratamiento char(4) NOT NULL,
+	id_especie char(5) NOT NULL,
+	id_medicamento char(4) NOT NULL,
+	estado character varying (15) NOT NULL,
+	PRIMARY KEY (id_tratamiento)
+);
+
+ALTER TABLE IF EXISTS public.tratamiento
+	ADD CONSTRAINT fk_id_especie FOREIGN KEY (id_especie)
+	REFERENCES public.especimen (id_especie) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.tratamiento
+	ADD CONSTRAINT fk_id_medicamento FOREIGN KEY (id_medicamento)
+	REFERENCES public.medicacion (id_medicamento) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.venta
+(
+	id_venta char (6) NOT NULL,
+	id_boleto char (1) NOT NULL,
+	id_zoo char (4) NOT NULL,
+	fecha date NOT NULL,
+	dia_semana character varying (10) NOT NULL,
+	PRIMARY KEY (id_venta)	
+);
+
+ALTER TABLE IF EXISTS public.venta
+	ADD CONSTRAINT fk_id_boleto FOREIGN KEY (id_boleto)
+	REFERENCES public.boleto (id_boleto) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.venta
+	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
+	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.estacionamiento
+(
+	id_estacionamiento char (4) NOT NULL,
+	id_zoo char (4) NOT NULL,
+	tamaño numeric NOT NULL,
+	numero integer NOT NULL,
+	PRIMARY KEY (id_estacionamiento)
+);
+
+ALTER TABLE IF EXISTS public.estacionamiento
+	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
+	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.comida
+(
+	id_recinto char (4) NOT NULL,
+	id_zoo char (4) NOT NULL,
+	comida character varying (20) NOT NULL,
+	bebida character varying (10) NOT NULL, 
+	PRIMARY KEY (id_recinto)
+);
+
+ALTER TABLE IF EXISTS public.comida
+	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
+	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
