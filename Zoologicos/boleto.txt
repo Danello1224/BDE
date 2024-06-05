@@ -1,5 +1,5 @@
 INSERT INTO boleto (id_boleto,precio,descripcion)
 VALUES
 ('1N',10,'Personas Menores de 12 años'),
-('2J,',50,'Personas Mayores de 12 años y menos de 60 años'),
+('2J',50,'Personas Mayores de 12 años y menos de 60 años'),
 ('3A',20,'Personas Mayores de 60 años');

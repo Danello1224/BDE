@@ -75,6 +75,22 @@ def combinacion_venta_z(unique_id_zoo,unique_id_venta_combinacion_z):
             asigna= False
     return dato
 
+def combinacion_zoo_esta(unique_id_zoo,fk_id_zoo_dicc):
+
+    asigna=True
+    while asigna:
+        dato_e=random.choice(unique_id_zoo)
+        suma_dic=sum(fk_id_zoo_dicc.values())
+        
+        if suma_dic >= (len(unique_id_zoo)*3):
+            fk_id_zoo_dicc[dato_e] += 1
+            break
+        else:
+            if fk_id_zoo_dicc[dato_e] < 3:
+                fk_id_zoo_dicc[dato_e] += 1
+                break
+    return dato_e
+
 ## Codigo Principal 
 fake = Faker('es_MX')
 fake.add_provider(DataBaseZProvider)
@@ -86,6 +102,7 @@ fake.add_provider(DataBaseZProvider)
 num_venta = 15
 num_comidas = 4
 num_medicamentos = 66
+num_estacionamiento=240
 
 fecha_inicio=datetime.date(2021,1,1)
 fecha_final=datetime.date(2024,6,9)
@@ -240,7 +257,7 @@ with open(ruta_completa,'w',encoding='utf-8') as file:
     
     lista_boletos={
         1: ["N",10,"Personas Menores de 12 años"],
-        2: ["J,",50,"Personas Mayores de 12 años y menos de 60 años"],
+        2: ["J",50,"Personas Mayores de 12 años y menos de 60 años"],
         3: ["A",20,"Personas Mayores de 60 años"]
     }
     
@@ -365,7 +382,7 @@ with open(ruta_completa,'w',encoding='utf-8') as file:
         calle=calle.replace("'", "''")
         tipo_zoo=tipo_zoo.replace("'", "''")
         
-        file.write(f"('{id_zoo}','{nombre}',{tamaño},{presupuesto},'{estado}','{municipio}','{colonia}','{calle}','{cod_postal}',{espacios_animales},{espacios_generales},{espacios_administrativos},'{tipo_zoo})")
+        file.write(f"('{id_zoo}','{nombre}',{tamaño},{presupuesto},'{estado}','{municipio}','{colonia}','{calle}','{cod_postal}',{espacios_animales},{espacios_generales},{espacios_administrativos},'{tipo_zoo}')")
 
         if i< len(lista_zoo) :
             file.write(",\n")
@@ -515,7 +532,7 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
 
 with open(ruta_completa,'w',encoding='utf-8') as file:
-    file.write('INSERT INTO medicacion (id_tratamiento,id_especie,id_medicamento,estado)\nVALUES\n')
+    file.write('INSERT INTO tratamiento (id_tratamiento,id_especie,id_medicamento,estado)\nVALUES\n')
     
     
     for i in range(1,num_medicamentos+1):
@@ -545,7 +562,7 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
 
 with open(ruta_completa,'w',encoding='utf-8') as file:
-    file.write('INSERT INTO medicacion (id_venta,id_boleto,id_zoo,fecha,dia_semana)\nVALUES\n')
+    file.write('INSERT INTO venta (id_venta,id_boleto,id_zoo,fecha,dia_semana)\nVALUES\n')
     
     
     for i in range(1,num_venta+1):
@@ -565,4 +582,70 @@ with open(ruta_completa,'w',encoding='utf-8') as file:
         else:
             file.write(";\n")
 
-print("El archivo de medicamentos ha sido creado exitosamente")
+print("El archivo de ventas ha sido creado exitosamente")
+
+
+#________________________________________________________________________________________________________________
+## RUTA 8 ESTACIONAMIENTOS
+ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\estacionamientos.txt"
+directorio = os.path.dirname(ruta_completa)
+if not os.path.exists(directorio):
+    os.makedirs(directorio)
+
+with open(ruta_completa,'w',encoding='utf-8') as file:
+    file.write('INSERT INTO estacionamiento (id_estacionamiento,id_zoo,tamaño,numero)\nVALUES\n')
+    
+    fk_id_zoo_dicc={elemento: 0 for elemento in unique_id_zoo}
+    
+    for i in range(1,num_estacionamiento+1):
+        id_estacionamiento = str(i)
+        fk_id_zoo_e=combinacion_zoo_esta(unique_id_zoo,fk_id_zoo_dicc)
+        tamaño_estacionamiento=random.randint(2000,100000)
+        numero_estacionamiento=fk_id_zoo_dicc[fk_id_zoo_e]
+        
+        file.write(f"('{id_estacionamiento}','{fk_id_zoo_e}',{tamaño_estacionamiento},{numero_estacionamiento})")
+
+        if i < num_estacionamiento:
+            file.write(",\n")
+        else:
+            file.write(";\n")
+
+print("El archivo de estacionamiento sido creado exitosamente")
+
+#_________________________________________________________________________________________________________________________________
+
+#------------------------------------------------------------------------------------------------------------------------------
+def merge_text_files(file_paths, output_file_path):
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
+        for file_path in file_paths:
+            with open(file_path, 'r', encoding='utf-8') as input_file:
+                output_file.write(input_file.read())
+                output_file.write('\n\n\n')
+
+
+# Lista de los nombres de los archivos de texto que quieres unir
+file_paths = [r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\Codigo_Tablas_Zoo.txt", 
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\animales.txt", 
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\medicacion.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\boleto.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\zoologico.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\especimen.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\tratamiento.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\ventas.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\estacionamientos.txt"
+              ]
+
+file_paths_Update = [r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\animalesUpdate.txt", 
+              r"C:\Users\danel_jaje6pg\Downloads\Zoologicos\especimenUpdate.txt"
+              ]
+
+# Nombre del archivo de salida
+output_file_path = r'C:\Users\danel_jaje6pg\Downloads\Zoologicos\BASE_DATOS_ZOO.txt'
+output_file_path_Update = r'C:\Users\danel_jaje6pg\Downloads\Zoologicos\BASE_DATOS_Zoologico_UPDATE.txt'
+
+#Llamar a la función para unir los archivos
+merge_text_files(file_paths, output_file_path)
+merge_text_files(file_paths_Update, output_file_path_Update)
+
+print("¡Archivos unidos exitosamente!")
+

@@ -1,3 +1,9 @@
+INSERT INTO animales (id_animal,nombre_animal,nombre_cientifico,familia,genero,especie,orden,clase,peligro_extincion)
+VALUES
+('3E','Esquilax','Equus fictus','Equidae','Equus','fictus','Perissodactyla','Mammalia','False');
+
+
+
 INSERT INTO especimen (id_especie,id_animal,id_zoo,sexo,continente,pais,alimentacion,anio_nacimiento)
 VALUES
 ('13001','3E','1','Macho','America','Estados Unidos','Herbívoro','2009'),
@@ -1000,3 +1006,6 @@ VALUES
 ('13998','3E','58','Macho','America','Canada','Herbívoro','2018'),
 ('13999','3E','50','Macho','America','Estados Unidos','Herbívoro','2009'),
 ('14000','3E','23','Hembra','America','Canada','Herbívoro','2009');
+
+
+

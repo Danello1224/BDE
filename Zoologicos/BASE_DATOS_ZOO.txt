@@ -1,3 +1,262 @@
+/* 
+Nombre: Saldivar Beltran Daniela
+Asignatura :  IBDE
+Semestre : 2024-2
+Grupo: 02
+Titulo: Zoologicos
+Descripción : Zoologicos y animales
+Version 1.0
+*/
+---------------------------------------
+/* Crear una base de datos*/
+CREATE DATABASE dsb_z
+WITH
+OWNER= postgres
+ENCODING = 'UTF-8'
+TABLESPACE = pg_default
+CONNECTION LIMIT = -1;
+--------------------------------------
+\c dsb_z
+
+CREATE TABLE public.animales
+(
+	id_animal char (5) NOT NULL,
+	nombre_animal character varying (40) NOT NULL,
+	nombre_cientifico character varying (60) NOT NULL,
+	familia character varying (40) NOT NULL,
+	genero character varying (40) NOT NULL,
+	especie character varying (40) NOT NULL,
+	orden character varying (40) NOT NULL,
+	clase character varying (40) NOT NULL,
+	peligro_extincion boolean NOT NULL,
+	PRIMARY KEY (id_animal)
+);
+
+CREATE TABLE public.medicacion 
+(
+	id_medicamento char (4) NOT NULL,
+	nombre_med character varying (40) NOT NULL,
+	PRIMARY KEY (id_medicamento)
+);
+
+CREATE TABLE public.boleto
+(
+	id_boleto char(2) NOT NULL,
+	precio integer NOT NULL,
+	descripcion text NOT NULL,
+	PRIMARY KEY (id_boleto)
+);
+CREATE TABLE public.zoologico
+(
+	id_zoo char(4) NOT NULL,
+	nombre character varying (40) NOT NULL,
+	tamaño numeric NOT NULL,
+	presupuesto bigint NOT NULL,
+	estado character varying (30) NOT NULL,
+	municipio character varying (40) NOT NULL,
+	colonia character varying NOT NULL,
+	calle character varying NOT NULL,
+	cod_postal char (5) NOT NULL,
+	espacios_animales integer NOT NULL,
+	espacios_generales integer NOT NULL,
+	espacios_administrativos integer NOT NULL,
+	tipo_zoo char (7) NOT NULL,
+	PRIMARY KEY (id_zoo)
+);
+
+CREATE TABLE public.especimen
+(
+	id_especie char(5) NOT NULL,
+	id_animal char(5) NOT NULL,
+	id_zoo char(4) NOT NULL,
+	sexo character varying (10) NOT NULL,
+	continente character varying (30) NOT NULL,
+	pais character varying (60) NOT NULL,
+	alimentacion character varying (20) NOT NULL,
+	anio_nacimiento char (4) NOT NULL,
+	PRIMARY KEY (id_especie)
+);
+
+ALTER TABLE IF EXISTS public.especimen
+	ADD CONSTRAINT fk_id_animal FOREIGN KEY (id_animal)
+	REFERENCES public.animales (id_animal) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.especimen
+	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
+	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.tratamiento
+(
+	id_tratamiento char(4) NOT NULL,
+	id_especie char(5) NOT NULL,
+	id_medicamento char(4) NOT NULL,
+	estado character varying (15) NOT NULL,
+	PRIMARY KEY (id_tratamiento)
+);
+
+ALTER TABLE IF EXISTS public.tratamiento
+	ADD CONSTRAINT fk_id_especie FOREIGN KEY (id_especie)
+	REFERENCES public.especimen (id_especie) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.tratamiento
+	ADD CONSTRAINT fk_id_medicamento FOREIGN KEY (id_medicamento)
+	REFERENCES public.medicacion (id_medicamento) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.venta
+(
+	id_venta char (6) NOT NULL,
+	id_boleto char (2) NOT NULL,
+	id_zoo char (4) NOT NULL,
+	fecha date NOT NULL,
+	dia_semana character varying (10) NOT NULL,
+	PRIMARY KEY (id_venta)	
+);
+
+ALTER TABLE IF EXISTS public.venta
+	ADD CONSTRAINT fk_id_boleto FOREIGN KEY (id_boleto)
+	REFERENCES public.boleto (id_boleto) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.venta
+	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
+	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.estacionamiento
+(
+	id_estacionamiento char (4) NOT NULL,
+	id_zoo char (4) NOT NULL,
+	tamaño numeric NOT NULL,
+	numero integer NOT NULL,
+	PRIMARY KEY (id_estacionamiento)
+);
+
+ALTER TABLE IF EXISTS public.estacionamiento
+	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
+	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.comida
+(
+	id_recinto char (4) NOT NULL,
+	id_zoo char (4) NOT NULL,
+	comida character varying (20) NOT NULL,
+	bebida character varying (10) NOT NULL, 
+	PRIMARY KEY (id_recinto)
+);
+
+ALTER TABLE IF EXISTS public.comida
+	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
+	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+
+INSERT INTO animales (id_animal,nombre_animal,nombre_cientifico,familia,genero,especie,orden,clase,peligro_extincion)
+VALUES
+('1J','Jaguar','Panthera onca','Felidae','Panthera','onca','Carnivora','Mammalia','True'),
+('2G','Gorila de montaña','Gorilla beringei','Hominidae','Gorilla','beringei','Primates','Mammalia','True');
+
+
+
+INSERT INTO medicacion (id_medicamento,nombre_med)
+VALUES
+('1A','Amoxicilina'),
+('2C','Ciprofloxacino'),
+('3D','Doxiciclina');
+
+
+
+INSERT INTO boleto (id_boleto,precio,descripcion)
+VALUES
+('1N',10,'Personas Menores de 12 años'),
+('2J',50,'Personas Mayores de 12 años y menos de 60 años'),
+('3A',20,'Personas Mayores de 60 años');
+
+
+
+INSERT INTO zoologico (id_zoo,nombre,tamaño,presupuesto,estado,municipio,colonia,calle,cod_postal,espacios_animales,espacios_generales,espacios_administrativos,tipo_zoo)
+VALUES
+('1','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',181,14,9,'Publico'),
+('2','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',243,11,10,'Publico'),
+('3','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',196,12,9,'Publico'),
+('4','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',155,12,8,'Publico'),
+('5','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',195,10,9,'Publico'),
+('6','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',185,11,7,'Publico'),
+('7','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',160,10,8,'Publico'),
+('8','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',293,12,5,'Publico'),
+('9','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',276,15,5,'Publico'),
+('10','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',252,12,8,'Publico'),
+('11','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',239,14,8,'Publico'),
+('12','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',182,14,6,'Publico'),
+('13','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',180,11,10,'Publico'),
+('14','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',276,15,10,'Publico'),
+('15','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',212,14,8,'Publico'),
+('16','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',216,12,10,'Publico'),
+('17','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',284,10,6,'Publico'),
+('18','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',154,12,6,'Publico'),
+('19','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',290,11,10,'Publico'),
+('20','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',178,14,5,'Publico'),
+('21','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',231,10,10,'Publico'),
+('22','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',224,15,10,'Publico'),
+('23','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',166,11,7,'Publico'),
+('24','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',275,11,5,'Publico'),
+('25','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',167,11,10,'Publico'),
+('26','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',277,14,7,'Publico'),
+('27','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',150,13,8,'Publico'),
+('28','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',250,14,9,'Publico'),
+('29','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',290,10,5,'Publico'),
+('30','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',251,14,5,'Publico'),
+('31','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',294,11,6,'Publico'),
+('32','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',207,14,10,'Publico'),
+('33','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',237,14,10,'Publico'),
+('34','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',195,14,10,'Publico'),
+('35','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',253,14,6,'Publico'),
+('36','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',227,14,10,'Publico'),
+('37','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',252,14,5,'Publico'),
+('38','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',275,10,9,'Publico'),
+('39','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',222,10,7,'Publico'),
+('40','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',190,14,9,'Publico'),
+('41','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',189,15,7,'Publico'),
+('42','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',299,10,6,'Publico'),
+('43','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',281,13,10,'Publico'),
+('44','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',234,11,8,'Publico'),
+('45','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',263,12,5,'Publico'),
+('46','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',183,11,10,'Publico'),
+('47','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',250,13,7,'Publico'),
+('48','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',283,11,10,'Publico'),
+('49','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',186,15,10,'Publico'),
+('50','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',205,11,6,'Publico'),
+('51','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',235,11,7,'Publico'),
+('52','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',283,14,5,'Publico'),
+('53','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',155,13,5,'Publico'),
+('54','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',296,11,5,'Publico'),
+('55','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',230,11,6,'Publico'),
+('56','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',184,10,10,'Publico'),
+('57','Zoologico de Chapultepec',17,31760000,'Ciudad de Mexico','Miguel Hidalgo','Bosque de Chapultepec','Chivatito','11850',285,15,9,'Publico'),
+('58','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',161,11,9,'Publico'),
+('59','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',224,11,10,'Publico'),
+('60','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',266,10,6,'Publico'),
+('61','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',225,10,5,'Publico'),
+('62','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',168,12,6,'Publico'),
+('63','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',201,14,6,'Publico'),
+('64','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',211,10,7,'Publico'),
+('65','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',203,12,5,'Publico'),
+('66','Zoologico de San Juan de Aragon',15,26800000,'Ciudad de Mexico','Gustavo A. Madero','San Juan de Aragon','Jose Loreto Fabela','07920',255,13,8,'Publico');
+
+
+
 INSERT INTO especimen (id_especie,id_animal,id_zoo,sexo,continente,pais,alimentacion,anio_nacimiento)
 VALUES
 ('1','1J','1','Macho','America','Belice','Carnivoro','2010'),
@@ -1000,3 +1259,342 @@ VALUES
 ('998','2G','23','Macho','Africa','Republica Democratica del congo','Heribivoro','2004'),
 ('999','2G','49','Macho','Africa','Ruanda','Heribivoro','2014'),
 ('1000','2G','59','Macho','Africa','Republica Democratica del congo','Heribivoro','2004');
+
+
+
+INSERT INTO tratamiento (id_tratamiento,id_especie,id_medicamento,estado)
+VALUES
+('1','847','1A','Finalizado'),
+('2','969','1A','Activo'),
+('3','325','3D','Activo'),
+('4','340','3D','Activo'),
+('5','711','2C','Finalizado'),
+('6','899','3D','Finalizado'),
+('7','163','1A','Activo'),
+('8','755','1A','Finalizado'),
+('9','963','3D','Finalizado'),
+('10','642','1A','Activo'),
+('11','39','2C','Activo'),
+('12','162','1A','Finalizado'),
+('13','634','3D','Finalizado'),
+('14','983','3D','Activo'),
+('15','470','3D','Activo'),
+('16','266','3D','Finalizado'),
+('17','66','2C','Activo'),
+('18','565','2C','Finalizado'),
+('19','887','2C','Finalizado'),
+('20','686','1A','Finalizado'),
+('21','12','2C','Finalizado'),
+('22','341','3D','Finalizado'),
+('23','208','3D','Finalizado'),
+('24','841','2C','Activo'),
+('25','556','2C','Activo'),
+('26','650','1A','Finalizado'),
+('27','254','1A','Activo'),
+('28','864','3D','Finalizado'),
+('29','875','1A','Finalizado'),
+('30','911','2C','Finalizado'),
+('31','506','3D','Activo'),
+('32','154','3D','Activo'),
+('33','622','3D','Finalizado'),
+('34','552','3D','Finalizado'),
+('35','206','1A','Finalizado'),
+('36','465','2C','Finalizado'),
+('37','637','3D','Finalizado'),
+('38','367','3D','Finalizado'),
+('39','640','3D','Activo'),
+('40','823','2C','Activo'),
+('41','964','1A','Finalizado'),
+('42','766','2C','Finalizado'),
+('43','368','3D','Activo'),
+('44','201','3D','Activo'),
+('45','477','1A','Finalizado'),
+('46','721','3D','Activo'),
+('47','829','3D','Activo'),
+('48','828','1A','Activo'),
+('49','908','1A','Finalizado'),
+('50','979','3D','Finalizado'),
+('51','796','3D','Finalizado'),
+('52','605','3D','Activo'),
+('53','932','2C','Activo'),
+('54','464','1A','Activo'),
+('55','247','3D','Finalizado'),
+('56','444','1A','Activo'),
+('57','235','2C','Finalizado'),
+('58','415','1A','Finalizado'),
+('59','804','3D','Activo'),
+('60','454','1A','Finalizado'),
+('61','661','1A','Finalizado'),
+('62','840','3D','Finalizado'),
+('63','590','1A','Activo'),
+('64','384','2C','Finalizado'),
+('65','735','1A','Finalizado'),
+('66','287','2C','Finalizado');
+
+
+
+INSERT INTO venta (id_venta,id_boleto,id_zoo,fecha,dia_semana)
+VALUES
+('1J','2J','51','2023-03-03','Viernes'),
+('2J','2J','60','2021-08-25','Miercoles'),
+('3N','1N','30','2023-04-24','Lunes'),
+('4N','1N','12','2021-07-18','Domingo'),
+('5A','3A','8','2023-01-19','Jueves'),
+('6J','2J','2','2022-09-09','Viernes'),
+('7J','2J','63','2022-01-29','Sabado'),
+('8J','2J','58','2022-07-27','Miercoles'),
+('9A','3A','65','2021-01-05','Martes'),
+('10J','2J','42','2022-12-17','Sabado'),
+('11N','1N','39','2023-11-06','Lunes'),
+('12A','3A','45','2021-08-25','Miercoles'),
+('13A','3A','7','2023-10-18','Miercoles'),
+('14A','3A','12','2024-01-08','Lunes'),
+('15A','3A','30','2022-06-04','Sabado');
+
+
+
+INSERT INTO estacionamiento (id_estacionamiento,id_zoo,tamaño,numero)
+VALUES
+('1','12',67011,1),
+('2','21',97353,1),
+('3','54',33143,1),
+('4','1',13584,1),
+('5','57',37003,1),
+('6','62',73519,1),
+('7','56',55624,1),
+('8','58',47358,1),
+('9','10',50475,1),
+('10','61',64429,1),
+('11','44',6386,1),
+('12','22',26604,1),
+('13','33',11558,1),
+('14','27',76951,1),
+('15','46',10992,1),
+('16','21',77202,2),
+('17','47',38840,1),
+('18','63',34686,1),
+('19','21',66017,3),
+('20','49',41772,1),
+('21','43',54009,1),
+('22','1',55406,2),
+('23','28',90392,1),
+('24','56',8457,2),
+('25','6',62126,1),
+('26','55',70898,1),
+('27','14',30277,1),
+('28','14',10796,2),
+('29','63',19578,2),
+('30','5',61114,1),
+('31','3',44645,1),
+('32','25',87700,1),
+('33','58',70039,2),
+('34','61',66427,2),
+('35','6',14412,2),
+('36','23',5469,1),
+('37','59',75544,1),
+('38','12',32034,2),
+('39','3',20058,2),
+('40','54',22784,2),
+('41','64',85407,1),
+('42','22',68803,2),
+('43','10',90499,2),
+('44','17',2515,1),
+('45','49',16648,2),
+('46','52',34476,1),
+('47','16',54024,1),
+('48','39',85695,1),
+('49','7',60015,1),
+('50','10',73784,3),
+('51','4',32983,1),
+('52','9',45258,1),
+('53','36',80676,1),
+('54','65',3259,1),
+('55','38',56214,1),
+('56','49',36973,3),
+('57','44',71180,2),
+('58','38',83555,2),
+('59','18',30639,1),
+('60','33',92881,2),
+('61','5',83817,2),
+('62','52',16078,2),
+('63','6',73328,3),
+('64','27',46377,2),
+('65','11',41539,1),
+('66','62',47758,2),
+('67','47',13410,2),
+('68','30',35605,1),
+('69','46',12820,2),
+('70','56',80304,3),
+('71','4',84148,2),
+('72','63',65587,3),
+('73','34',10082,1),
+('74','15',41094,1),
+('75','61',3117,3),
+('76','65',7713,2),
+('77','26',4096,1),
+('78','12',44554,3),
+('79','43',73912,2),
+('80','1',62638,3),
+('81','26',49418,2),
+('82','51',8986,1),
+('83','55',18635,2),
+('84','45',44872,1),
+('85','58',37627,3),
+('86','62',49874,3),
+('87','23',80486,2),
+('88','15',38706,2),
+('89','22',35371,3),
+('90','64',67479,2),
+('91','35',79088,1),
+('92','66',38340,1),
+('93','48',92001,1),
+('94','46',75083,3),
+('95','25',93189,2),
+('96','29',57033,1),
+('97','47',46307,3),
+('98','34',22535,2),
+('99','53',14046,1),
+('100','17',57706,2),
+('101','28',10323,2),
+('102','33',32687,3),
+('103','30',6617,2),
+('104','60',46878,1),
+('105','48',91376,2),
+('106','39',59814,2),
+('107','50',40082,1),
+('108','57',97941,2),
+('109','31',86464,1),
+('110','45',34959,2),
+('111','39',75699,3),
+('112','29',71832,2),
+('113','37',20705,1),
+('114','37',17325,2),
+('115','42',29530,1),
+('116','3',81543,3),
+('117','28',73118,3),
+('118','5',95675,3),
+('119','14',8915,3),
+('120','18',33398,2),
+('121','65',14796,3),
+('122','34',57041,3),
+('123','4',4782,3),
+('124','60',89376,2),
+('125','13',14423,1),
+('126','51',99049,2),
+('127','57',11989,3),
+('128','40',99735,1),
+('129','59',67553,2),
+('130','29',32251,3),
+('131','38',5050,3),
+('132','59',66840,3),
+('133','2',83404,1),
+('134','8',45774,1),
+('135','42',50132,2),
+('136','24',30453,1),
+('137','48',77900,3),
+('138','51',68875,3),
+('139','16',12193,2),
+('140','36',18264,2),
+('141','36',91144,3),
+('142','26',51097,3),
+('143','43',51553,3),
+('144','25',90888,3),
+('145','9',84105,2),
+('146','27',83964,3),
+('147','18',28752,3),
+('148','37',22033,3),
+('149','54',66936,3),
+('150','2',23216,2),
+('151','50',63523,2),
+('152','64',82775,3),
+('153','32',90143,1),
+('154','45',40238,3),
+('155','35',38904,2),
+('156','32',87904,2),
+('157','11',32978,2),
+('158','2',75803,3),
+('159','53',64816,2),
+('160','16',30554,3),
+('161','53',93059,3),
+('162','42',46280,3),
+('163','20',89461,1),
+('164','17',66298,3),
+('165','40',65535,2),
+('166','8',63510,2),
+('167','9',42680,3),
+('168','41',17748,1),
+('169','40',45922,3),
+('170','55',55230,3),
+('171','41',92050,2),
+('172','66',54916,2),
+('173','31',85140,2),
+('174','8',51907,3),
+('175','23',44649,3),
+('176','13',12713,2),
+('177','7',82019,2),
+('178','20',87314,2),
+('179','15',78624,3),
+('180','35',92192,3),
+('181','44',21959,3),
+('182','30',86404,3),
+('183','20',34096,3),
+('184','50',8909,3),
+('185','60',11820,3),
+('186','66',54135,3),
+('187','11',74518,3),
+('188','7',89215,3),
+('189','19',30098,1),
+('190','52',52457,3),
+('191','31',97140,3),
+('192','32',65907,3),
+('193','41',61560,3),
+('194','19',91165,2),
+('195','13',38859,3),
+('196','19',80002,3),
+('197','24',63172,2),
+('198','24',19107,3),
+('199','8',91651,4),
+('200','61',32272,4),
+('201','47',80115,4),
+('202','24',49722,4),
+('203','31',14039,4),
+('204','19',11065,4),
+('205','18',15575,4),
+('206','5',92780,4),
+('207','34',25493,4),
+('208','23',79878,4),
+('209','47',4653,5),
+('210','62',64765,4),
+('211','55',15676,4),
+('212','12',23830,4),
+('213','63',99279,4),
+('214','32',8465,4),
+('215','55',11403,5),
+('216','2',59777,4),
+('217','51',87437,4),
+('218','51',94122,5),
+('219','47',38395,6),
+('220','64',89257,4),
+('221','38',53483,4),
+('222','6',13295,4),
+('223','5',30824,5),
+('224','6',51151,5),
+('225','52',12044,4),
+('226','61',66678,5),
+('227','54',88444,4),
+('228','59',96686,4),
+('229','26',52907,4),
+('230','3',68714,4),
+('231','42',52923,4),
+('232','21',29237,4),
+('233','34',58586,5),
+('234','25',78434,4),
+('235','3',36417,5),
+('236','16',19896,4),
+('237','16',60387,5),
+('238','42',7426,5),
+('239','66',66423,4),
+('240','13',90491,4);
+
+
+
