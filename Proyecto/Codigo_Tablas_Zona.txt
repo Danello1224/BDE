@@ -1,0 +1,90 @@
+/* 
+Nombre: Saldivar Beltran Daniela
+Asignatura :  IBDE
+Semestre : 2024-2
+Grupo: 02
+Titulo: Proyecto_Zonas_Arqueologicas
+Descripción : Visitas a Zonas Arqueologicas
+Version 1.0
+*/
+---------------------------------------
+/* Crear una base de datos*/
+CREATE DATABASE dsb
+WITH
+OWNER= postgres
+ENCODING = 'UTF-8'
+TABLESPACE = pg_default
+CONNECTION LIMIT = -1;
+--------------------------------------
+\c dsb
+--------------------------------------
+
+CREATE TABLE public.vehiculo
+(
+	id_vehiculo char (4) NOT NULL,
+	marca character varying (20) NOT NULL,
+	modelo character varying (20) NOT NULL,
+	no_placa character varying (7) NOT NULL,
+	color character varying (20) NOT NULL,
+	PRIMARY KEY (id_vehiculo)
+);
+
+CREATE TABLE public.zona_arqueologica
+(
+	id_zona char(5) NOT NULL,
+	PRIMARY KEY (id_zona)
+);
+
+CREATE TABLE public.persona
+(
+	id_persona char(4) NOT NULL,
+	nombre character varying (20) NOT NULL,
+	ap_pat character varying (20) NOT NULL,
+	ap_mat character varying (20) NOT NULL,
+	edad integer NO NULL,
+	PRIMARY KEY (id_persona)
+);
+
+CREATE TABLE public.visitante
+(
+	id_visitante char (5) NOT NULL,
+	id_zona char (5) NOT NULL,
+	id_persona char (4) NOT NULL,
+	fecha_visita date NOT NULL,
+	monto_boleto integer NOT NULL,
+	PRIMARY KEY (id_visitante)
+);
+
+ALTER TABLE IF EXISTS public.visitante
+	ADD CONSTRAINT fk_id_zona FOREIGN KEY (id_zona)
+	REFERENCES public.zona_arqueologica (id_zona) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.visitante
+	ADD CONSTRAINT fk_id_persona FOREIGN KEY (id_persona)
+	REFERENCES public.persona (id_persona) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+CREATE TABLE public.ingreso
+(
+	id_ingreso char (4) NOT NULL,
+	id_zona char (5) NOT NULL,
+	id_vehiculo char (4) NOT NULL,
+	fecha_ingreso date NOT NULL,
+	precio_estacionamiento integer NOT NULL,
+	PRIMARY KEY (id_ingreso)
+);
+
+ALTER TABLE IF EXISTS public.ingreso
+	ADD CONSTRAINT fk_id_zona FOREIGN KEY (id_zona)
+	REFERENCES public.zona_arqueologica (id_zona) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.ingreso
+	ADD CONSTRAINT fk_id_vehiculo FOREIGN KEY (id_vehiculo)
+	REFERENCES public.vehiculo (id_vehiculo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
