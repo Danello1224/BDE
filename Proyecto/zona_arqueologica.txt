@@ -1,10 +1,15 @@
-INSERT INTO zona_arqueologica (id_zona)
+INSERT INTO zona_arqueologica (id_zona,nombre,estado,municipio)
 VALUES
-('1'),
-('2'),
-('3'),
-('4'),
-('5'),
-('6'),
-('7'),
-('8');
+('1','Cañada de la virgen','Guanajuato','San Miguel de Abasolo'),
+('2','Peralta','Guanajuato','Abasolo'),
+('3','Plazuelas','Guanajuato','Penjamo'),
+('4','Tula','Hidalgo','Tula de Allende'),
+('5','Xihuingo','Hidalgo','Tepeapulco'),
+('6','Huapalcalco','Hidalgo','Tulancingo de Bravo'),
+('7','Guachimontones','Jalisco','Teuchitlan'),
+('8','Ixtepete','Jalisco','Zapopan'),
+('9','El Grillo','Jalisco','Zapopan'),
+('10','El Cerrito','Queretaro','Corregidora'),
+('11','Ranas','Queretaro','San Joaquin'),
+('12','Toluquilla','Queretaro','Cadereyta de Montes'),
+('13','Tancama','Queretaro','Jalpan de Serra');

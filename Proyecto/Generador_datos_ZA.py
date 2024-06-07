@@ -107,6 +107,69 @@ class DatabaseAZProvider(BaseProvider):
             "Cian"
         ]
         return self.random_element(color_c)
+    
+
+def zona_visitante_c(unique_id_persona,unique_id_zona,unique_id_combinacion_visita,comprueba_lista):
+    asigna= True
+    while asigna:
+        persona_v=random.choice(unique_id_persona)
+        zona_v=random.choice(unique_id_zona)
+        if set(unique_id_persona) == comprueba_lista:
+            if persona_v in unique_id_combinacion_visita:
+                if len(unique_id_combinacion_visita[persona_v]) < 3:
+                    if unique_id_combinacion_visita[persona_v].count(zona_v) < 3:
+                        unique_id_combinacion_visita[persona_v].append(zona_v)
+                        asigna= False
+                        break
+        else:
+            if persona_v not in comprueba_lista:
+                comprueba_lista.add(persona_v)
+                unique_id_combinacion_visita[persona_v].append(zona_v)
+                asigna= False
+                break
+    return persona_v,zona_v
+
+def zona_vehiculo_c(unique_id_vehiculo,lista_visitas_vehiculo,lista_comprueba_v):
+    asigna= True
+    while asigna:
+        if unique_id_vehiculo == list(lista_comprueba_v):
+            vehiculo=random.choice(unique_id_vehiculo)
+            zona_z=random.randint(1,13)
+            if lista_visitas_vehiculo[zona_z][0]>0:
+                asigna= False
+                break
+        else:
+            vehiculo=random.choice(unique_id_vehiculo)
+            zona_z=random.randint(1,13)
+            if vehiculo not in lista_comprueba_v:
+                lista_comprueba_v.add(vehiculo)
+                
+    return vehiculo,zona_z
+
+def monto_boleto_e(unique_dicc_edad,fk_id_persona_v):
+    precio=0
+    edad=unique_dicc_edad[fk_id_persona_v][0]
+    if edad > 3.00 and edad < 14.01:
+        precio=20
+        return precio
+    elif edad > 14.00 and edad < 18.01:
+        precio=25
+        return precio
+    elif edad > 18.00 and edad < 25.01:
+        precio=30
+        return precio
+    elif edad > 25.00 and edad < 35.01:
+        precio=40
+        return precio
+    elif edad > 35.00 and edad < 75.01:
+        precio=60
+        return precio
+    elif edad > 75.00 and edad < 99.01:
+        precio=20
+        return precio
+    
+        
+
 
 
 ### CODIGO PRINCIPAL
@@ -121,12 +184,11 @@ num_ingresos=777
 fecha_inicio=datetime.date(2010,1,31)
 fecha_final=datetime.date(2024,5,31)
 
-unique_id_vehiculo=set()
+unique_id_vehiculo=list()
 unique_id_persona=list()
 unique_id_zona=list()
 
 unique_id_combinacion_ingreso=set()
-unique_id_combinacion_visita=set()
 unique_matricula=set()
 
 unique_dicc_edad=dict()
@@ -150,6 +212,7 @@ with open(ruta_completa,'w',encoding='utf-8') as file:
     
     for i in range(1,num_vehiculos+1):
         id_vehiculo = str(i)
+        unique_id_vehiculo.append(int(id_vehiculo))
         marca=fake.marca()
         modelo=fake.modelo(marca)
         no_placa=fake.matricula(unique_matricula)
@@ -176,24 +239,36 @@ if not os.path.exists(directorio):
     os.makedirs(directorio)
     
 with open(ruta_completa,'w',encoding='utf-8') as file:
-    file.write('INSERT INTO zona_arqueologica (id_zona)\nVALUES\n')
+    file.write('INSERT INTO zona_arqueologica (id_zona,nombre,estado,municipio)\nVALUES\n')
     
     lista_zona={
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-        6: 0,
-        7: 0,
-        8: 0
+        1: ["Cañada de la virgen","Guanajuato","San Miguel de Abasolo"],
+        2: ["Peralta","Guanajuato","Abasolo"],
+        3: ["Plazuelas","Guanajuato","Penjamo"],
+        4: ["Tula","Hidalgo","Tula de Allende"],
+        5: ["Xihuingo","Hidalgo","Tepeapulco"],
+        6: ["Huapalcalco","Hidalgo","Tulancingo de Bravo"],
+        7: ["Guachimontones","Jalisco","Teuchitlan"],
+        8: ["Ixtepete","Jalisco","Zapopan"],
+        9: ["El Grillo","Jalisco","Zapopan"],
+        10: ["El Cerrito","Queretaro","Corregidora"],
+        11: ["Ranas","Queretaro","San Joaquin"],
+        12: ["Toluquilla","Queretaro","Cadereyta de Montes"],
+        13: ["Tancama","Queretaro","Jalpan de Serra"]
     }
     
     for i in range(1,len(lista_zona)+1):
         id_zona = str(i)
-        unique_id_zona.append(id_zona)
+        unique_id_zona.append(int(id_zona))
+        nombre_z=lista_zona[int(id_zona)][0]
+        estado_z=lista_zona[int(id_zona)][1]
+        municipio_z=lista_zona[int(id_zona)][2]
         
-        file.write(f"('{id_zona}')")
+        nombre_z=nombre_z.replace("'", "''")
+        estado_z=estado_z.replace("'", "''")
+        municipio_z_z=municipio_z.replace("'", "''")
+        
+        file.write(f"('{id_zona}','{nombre_z}','{estado_z}','{municipio_z}')")
 
         if i< len(lista_zona):
             file.write(",\n")
@@ -215,12 +290,21 @@ with open(ruta_completa,'w',encoding='utf-8') as file:
     
     for i in range(1,num_personas+1):
         id_persona = str(i)
-        unique_id_persona.append(id_persona)
+        unique_id_persona.append(int(id_persona))
         nombre=fake.first_name()
         ap_pat=fake.last_name()
         ap_mat=fake.last_name()
-        edad=random.randint(3,99)
-        unique_dicc_edad[id_persona]=[edad]
+        edad_anios=random.randint(3,99)
+        
+        if edad_anios== 3:
+            edad_meses=((random.randint(1,11))/100)
+        elif edad_anios ==99:
+            edad_meses=0.00
+        else:
+            edad_meses=((random.randint(0,11))/100)
+
+        edad=edad_anios+edad_meses
+        unique_dicc_edad[int(id_persona)]=[edad]
         
         nombre=nombre.replace("'", "''")
         ap_pat=ap_pat.replace("'", "''")
@@ -246,14 +330,34 @@ if not os.path.exists(directorio):
 with open(ruta_completa,'w',encoding='utf-8') as file:
     file.write('INSERT INTO visitante (id_visitante,id_zona,id_persona,fecha_visita,monto_boleto)\nVALUES\n')
     
+    unique_id_combinacion_visita= {numero:[] for numero in unique_id_persona}
+    comprueba_lista=set()
+    
+    lista_visitas={
+        1: [0],
+        2: [0],
+        3: [0],
+        4: [0],
+        5: [0],
+        6: [0],
+        7: [0],
+        8: [0],
+        9: [0],
+        10: [0],
+        11: [0],
+        12: [0],
+        13: [0]
+    }
+
     
     for i in range(1,num_visitantes+1):
         id_visitante = str(i)
-        fk_id_zona_v=1
-        fk_id_persona_v=1
+        fk_id_persona_v,fk_id_zona_v=zona_visitante_c(unique_id_persona,unique_id_zona,unique_id_combinacion_visita,comprueba_lista)
         fecha_visita=fake.date_between(start_date=fecha_inicio,end_date=fecha_final)
         fecha_visitante.append(fecha_visita)
-        monto_boleto="xd"
+        monto_boleto=monto_boleto_e(unique_dicc_edad,fk_id_persona_v)
+        
+        lista_visitas[fk_id_zona_v][0]=lista_visitas[fk_id_zona_v][0]+1
         
         file.write(f"('{id_visitante}','{fk_id_zona_v}','{fk_id_persona_v}','{fecha_visita}',{monto_boleto})")
 
@@ -263,34 +367,61 @@ with open(ruta_completa,'w',encoding='utf-8') as file:
             file.write(";\n")
 
 print("El archivo de visitante ha sido creado exitosamente")
-
-
 #________________________________________________________________________________________________________________
-## RUTA 4 VISITANTE
+## RUTA 5 INGRESO
 ruta_completa = r"C:\Users\danel_jaje6pg\Downloads\ProyectoBDE\ingreso.txt"
 directorio = os.path.dirname(ruta_completa)
 if not os.path.exists(directorio):
     os.makedirs(directorio)
     
 with open(ruta_completa,'w',encoding='utf-8') as file:
-    file.write('INSERT INTO ingeso (id_ingreso,id_zona,id_vehiculo,fecha_ingreso,precio_estacionamiento)\nVALUES\n')
+    file.write('INSERT INTO ingreso (id_ingreso,id_zona,id_vehiculo,fecha_ingreso,precio_estacionamiento)\nVALUES\n')
     
     fecha_visitante_vehiculo=fecha_visitante.copy()
     
+    lista_visitas_vehiculo=lista_visitas.copy()
+    lista_comprueba_v=set()
+    
     for i in range(1,num_ingresos+1):
         id_ingreso = str(i)
-        fk_id_zona_i=1
-        fk_id_vehiculo_i=1
+        fk_id_vehiculo_i,fk_id_zona_i=zona_vehiculo_c(unique_id_vehiculo,lista_visitas_vehiculo,lista_comprueba_v)
         fecha_ingreso=random.choice(fecha_visitante_vehiculo)
         fecha_visitante_vehiculo.remove(fecha_ingreso)
         precio_estacionamiento=70
         
         file.write(f"('{id_ingreso}','{fk_id_zona_i}','{fk_id_vehiculo_i}','{fecha_ingreso}',{precio_estacionamiento})")
 
-        if i< num_visitantes:
+        if i< num_ingresos:
             file.write(",\n")
         else:
             file.write(";\n")
 
 print("El archivo de ingreso ha sido creado exitosamente")
+
+#------------------------------------------------------------------------------------------------------------------------------
+def merge_text_files(file_paths, output_file_path):
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
+        for file_path in file_paths:
+            with open(file_path, 'r', encoding='utf-8') as input_file:
+                output_file.write(input_file.read())
+                output_file.write('\n\n\n')
+
+
+# Lista de los nombres de los archivos de texto que quieres unir
+file_paths = [r"C:\Users\danel_jaje6pg\Downloads\ProyectoBDE\Codigo_Tablas_Zona.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\ProyectoBDE\vehiculos.txt", 
+              r"C:\Users\danel_jaje6pg\Downloads\ProyectoBDE\zona_arqueologica.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\ProyectoBDE\persona.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\ProyectoBDE\visitante.txt",
+              r"C:\Users\danel_jaje6pg\Downloads\ProyectoBDE\ingreso.txt"
+              ]
+
+
+# Nombre del archivo de salida
+output_file_path = r"C:\Users\danel_jaje6pg\Downloads\ProyectoBDE\BASE_PROYECTO.txt"
+
+#Llamar a la función para unir los archivos
+merge_text_files(file_paths, output_file_path)
+
+print("¡Archivos unidos exitosamente!")
 

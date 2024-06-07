@@ -443,7 +443,7 @@
         <dia:point val="30.8,20.95"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="30.8,20.95;37.875,22.85"/>
+        <dia:rectangle val="30.8,20.95;40.185,25.25"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -452,10 +452,10 @@
         <dia:point val="30.8,20.95"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="7.0749999999999993"/>
+        <dia:real val="9.3849999999999998"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="1.8999999999999999"/>
+        <dia:real val="4.3000000000000007"/>
       </dia:attribute>
       <dia:attribute name="text_colour">
         <dia:color val="#000000"/>
@@ -524,6 +524,66 @@
           </dia:attribute>
           <dia:attribute name="unique">
             <dia:boolean val="true"/>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="table_attribute">
+          <dia:attribute name="name">
+            <dia:string>#Nombre #</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>#VARCHAR (40)#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="primary_key">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="nullable">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="unique">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="table_attribute">
+          <dia:attribute name="name">
+            <dia:string>#Estado #</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>#VARCHAR (30)#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="primary_key">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="nullable">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="unique">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="table_attribute">
+          <dia:attribute name="name">
+            <dia:string>#Municipio#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>#VARCHAR (30)#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="primary_key">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="nullable">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="unique">
+            <dia:boolean val="false"/>
           </dia:attribute>
         </dia:composite>
       </dia:attribute>
@@ -735,14 +795,14 @@
     </dia:object>
     <dia:object type="Standard - ZigZagLine" version="1" id="O6">
       <dia:attribute name="obj_pos">
-        <dia:point val="37.875,21.4"/>
+        <dia:point val="40.185,21.4"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="37.7632,21.0691;46.05,21.7309"/>
+        <dia:rectangle val="40.0732,21.0691;46.05,21.7309"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="37.875,21.4"/>
-        <dia:point val="37.925,21.4"/>
+        <dia:point val="40.185,21.4"/>
+        <dia:point val="40.235,21.4"/>
         <dia:point val="45.95,21.4"/>
         <dia:point val="46,21.4"/>
       </dia:attribute>
@@ -921,7 +981,7 @@
             <dia:string>#Edad#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#INTEGER#</dia:string>
+            <dia:string>#REAL#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>##</dia:string>

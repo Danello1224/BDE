@@ -32,6 +32,9 @@ CREATE TABLE public.vehiculo
 CREATE TABLE public.zona_arqueologica
 (
 	id_zona char(5) NOT NULL,
+	nombre character varying (40) NOT NULL,
+	estado character varying (30) NOT NULL,
+	municipio character varying (30) NOT NULL,
 	PRIMARY KEY (id_zona)
 );
 
@@ -41,7 +44,7 @@ CREATE TABLE public.persona
 	nombre character varying (20) NOT NULL,
 	ap_pat character varying (20) NOT NULL,
 	ap_mat character varying (20) NOT NULL,
-	edad integer NO NULL,
+	edad real NOT NULL,
 	PRIMARY KEY (id_persona)
 );
 
