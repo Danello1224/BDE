@@ -1,0 +1,14 @@
+ALTER TABLE zona_arqueologica ADD COLUMN presupuesto_anual bigint;
+UPDATE zona_arqueologica SET presupuesto_anual = 48764056 WHERE id_zona = '1';
+UPDATE zona_arqueologica SET presupuesto_anual = 31105278 WHERE id_zona = '2';
+UPDATE zona_arqueologica SET presupuesto_anual = 19325290 WHERE id_zona = '3';
+UPDATE zona_arqueologica SET presupuesto_anual = 30232809 WHERE id_zona = '4';
+UPDATE zona_arqueologica SET presupuesto_anual = 3833686 WHERE id_zona = '5';
+UPDATE zona_arqueologica SET presupuesto_anual = 16277417 WHERE id_zona = '6';
+UPDATE zona_arqueologica SET presupuesto_anual = 16719295 WHERE id_zona = '7';
+UPDATE zona_arqueologica SET presupuesto_anual = 40531339 WHERE id_zona = '8';
+UPDATE zona_arqueologica SET presupuesto_anual = 40102105 WHERE id_zona = '9';
+UPDATE zona_arqueologica SET presupuesto_anual = 19478416 WHERE id_zona = '10';
+UPDATE zona_arqueologica SET presupuesto_anual = 1862131 WHERE id_zona = '11';
+UPDATE zona_arqueologica SET presupuesto_anual = 42077379 WHERE id_zona = '12';
+UPDATE zona_arqueologica SET presupuesto_anual = 17751506 WHERE id_zona = '13';
