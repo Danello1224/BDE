@@ -1,0 +1,48 @@
+--------------------------------------
+--- CONSULTA 1
+----Obtener todos los datos generales de los animales, así como todos los datos del zoológico donde habitan, de todos aquellos animales que han sido medicados.
+
+SELECT animales.*,especimen.*,zoologico.*
+FROM tratamiento
+JOIN especimen
+ON tratamiento.id_especie = especimen.id_especie
+JOIN zoologico
+ON zoologico.id_zoo= especimen.id_zoo
+JOIN animales
+ON animales.id_animal= especimen.id_animal;
+
+--------------------------------------
+--- CONSULTA 2
+----Obtener el numero de entradas por cada categoría, así como los datos de los zoológicos y el número de animales en cada uno de ellos, para todos los zoológicos. (Se puede realizar más de una consulta).
+
+
+SELECT zoologico.*, no_especies.Especies , venta.id_boleto, venta.venta_cat
+FROM(	SELECT id_zoo, COUNT(id_zoo) AS Especies 
+		FROM especimen 
+		GROUP BY id_zoo 
+		ORDER BY CAST (id_zoo AS INTEGER) 
+	) AS no_especies
+JOIN(	SELECT venta.id_boleto,venta.id_zoo, COUNT(venta.id_boleto) AS venta_cat
+		FROM venta
+		JOIN boleto
+		ON venta.id_boleto = boleto.id_boleto
+		GROUP BY venta.id_zoo, venta.id_boleto
+		ORDER BY CAST (id_zoo AS INTEGER)
+	) AS venta
+ON venta.id_zoo = no_especies.id_zoo
+JOIN zoologico
+ON zoologico.id_zoo = venta.id_zoo;
+
+
+--------------------------------------
+--- CONSULTA 3
+----Obtener los datos de los zoológicos, así como los animales, de igual forma de los estacionamientos, de todos los zoológicos con fechada de color plateada
+
+SELECT zoologico.*, especimen.*,estacionamiento.*
+FROM zoologico
+JOIN especimen
+ON especimen.id_zoo = zoologico.id_zoo
+JOIN estacionamiento
+ON zoologico.id_zoo = estacionamiento.id_zoo
+WHERE color_fachada = 'Plateado'
+ORDER BY CAST (zoologico.id_zoo AS INTEGER),estacionamiento.numero;
