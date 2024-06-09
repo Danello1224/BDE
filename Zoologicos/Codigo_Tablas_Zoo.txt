@@ -12,7 +12,7 @@ Version 1.0
 CREATE DATABASE dsb_z
 WITH
 OWNER= postgres
-ENCODING = 'UTF-8'
+ENCODING = 'UTF8'
 TABLESPACE = pg_default
 CONNECTION LIMIT = -1;
 --------------------------------------
@@ -49,7 +49,7 @@ CREATE TABLE public.boleto
 CREATE TABLE public.zoologico
 (
 	id_zoo char(4) NOT NULL,
-	nombre character varying (40) NOT NULL,
+	nombre character varying  NOT NULL,
 	tamaño numeric NOT NULL,
 	presupuesto bigint NOT NULL,
 	estado character varying (30) NOT NULL,
@@ -149,15 +149,28 @@ ALTER TABLE IF EXISTS public.estacionamiento
 
 CREATE TABLE public.comida
 (
-	id_recinto char (4) NOT NULL,
-	id_zoo char (4) NOT NULL,
+	id_tipo_puesto char (4) NOT NULL,
 	comida character varying (20) NOT NULL,
+	PRIMARY KEY (id_tipo_puesto)
+);
+
+CREATE TABLE public.venta_comida
+(
+	id_recinto char (6) NOT NULL,
+	id_zoo char(4) NOT NULL,
+	id_tipo_puesto char (4) NOT NULL,
 	bebida character varying (10) NOT NULL, 
 	PRIMARY KEY (id_recinto)
 );
 
-ALTER TABLE IF EXISTS public.comida
+ALTER TABLE IF EXISTS public.venta_comida
 	ADD CONSTRAINT fk_id_zoo FOREIGN KEY (id_zoo)
 	REFERENCES public.zoologico (id_zoo) MATCH SIMPLE
+	ON UPDATE CASCADE
+	ON DELETE RESTRICT;
+
+ALTER TABLE IF EXISTS public.venta_comida
+	ADD CONSTRAINT fk_id_tipo_puesto FOREIGN KEY (id_tipo_puesto)
+	REFERENCES public.comida (id_tipo_puesto) MATCH SIMPLE
 	ON UPDATE CASCADE
 	ON DELETE RESTRICT;

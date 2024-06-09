@@ -1,0 +1,9 @@
+INSERT INTO comida (id_tipo_puesto,comida)
+VALUES
+('1TP','Tacos al Pastor'),
+('2E','Enchiladas'),
+('3S','Sopes'),
+('4C','Ceviche'),
+('5P','Pozole'),
+('6CN','Chiles en Nogada'),
+('7Q','Quesadillas');

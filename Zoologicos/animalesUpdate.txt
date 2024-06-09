@@ -1,3 +1,3 @@
 INSERT INTO animales (id_animal,nombre_animal,nombre_cientifico,familia,genero,especie,orden,clase,peligro_extincion)
 VALUES
-('3E','Esquilax','Equus fictus','Equidae','Equus','fictus','Perissodactyla','Mammalia','False');
+('27E','Esquilax','Equus fictus','Equidae','Equus','fictus','Perissodactyla','Mammalia','False');
